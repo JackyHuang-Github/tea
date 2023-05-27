@@ -1,0 +1,108 @@
+﻿@model vmContact
+
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    string GoogleMapKey = "";
+    tea.Models.Companys compDarta = new tea.Models.Companys();
+    using (z_repoCompanys comp = new z_repoCompanys()) { compDarta = comp.GetDefaultCompany(); }
+    using (GoogleMapService gmap = new GoogleMapService()) { GoogleMapKey = gmap.GoogleMapKey; }
+}
+
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+    <div class="container">
+        <div class="section-title">
+            <h2>連絡我們</h2>
+        </div>
+
+        @*<div class="map-section">*@
+        <div class="map-section d-flex justify-content-center">
+            @*<iframe style="border: 0; width: 100%; height: 450px;" src="https://www.google.com/maps/embed/v1/place?key=@GoogleMapKey&q=@compDarta.CompAddress" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>*@
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.96920066429!2d121.25184209999999!3d24.967162500000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34682203506837d9%3A0xab956e8f20c24297!2zMzIw5qGD5ZyS5biC5Lit5aOi5Y2A6Ieq56uL5LqU6KGXMTDomZ8!5e0!3m2!1szh-TW!2stw!4v1685158258378!5m2!1szh-TW!2stw" width="1200" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <div class="row justify-content-center" data-aos="fade-up">
+            <div class="col-lg-12">
+                <div class="info-wrap">
+                    <div class="row">
+                        <div class="col-lg-4 info">
+                            <i class="bi bi-geo-alt"></i>
+                            <h4>公司地址：</h4>
+                            <p>@compDarta.CompAddress</p>
+                        </div>
+                        <div class="col-lg-4 info mt-4 mt-lg-0">
+                            <i class="bi bi-envelope"></i>
+                            <h4>電子信箱：</h4>
+                            <p>@compDarta.ContactEmail</p>
+                        </div>
+                        <div class="col-lg-4 info mt-4 mt-lg-0">
+                            <i class="bi bi-phone"></i>
+                            <h4>連絡電話：</h4>
+                            <p>@compDarta.CompTel</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 justify-content-center" data-aos="fade-up">
+            <div class="col-lg-12">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal mt-2">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="row form-group mt-1">
+                            @Html.LabelFor(model => model.ContactorName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ContactorName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ContactorName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row form-group mt-1">
+                            @Html.LabelFor(model => model.ContactorEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ContactorEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ContactorEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row form-group mt-1">
+                            @Html.LabelFor(model => model.ContactorSubject, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ContactorSubject, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ContactorSubject, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row form-group mt-1">
+                            @Html.LabelFor(model => model.ContactorMessage, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.ContactorMessage, new { @class = "form-control", @rows = 10 })
+                                @Html.ValidationMessageFor(model => model.ContactorMessage, "", new { @class = "text-danger" })
+                                <h5 class="text-danger mt-2">註：若要上傳圖片，為避免圖片無法顯示，可先上傳到 <a href="https://imgur.com/" target="_blank" alt="Imgur">Imgur 網站</a>，再將連結填入即可!!</h5>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <input type="submit" value="送出訊息" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section><!-- End Contact Section -->
+
+@section scriptsbody {
+    <script type="text/javascript">
+        CKEDITOR.replace('ContactorMessage', {
+            filebrowserImageUploadUrl: '@Url.Action("CKEditorUploadImage", "Image", new { area = "" , folderName = "Contact"})',
+            extraPlugins: 'codesnippet',
+            codeSnippet_theme: 'monokai_sublime'
+        });
+    </script>
+}

@@ -1,0 +1,179 @@
+﻿@using tea.Models;
+@model vmShopIndex
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutShop.cshtml";
+    string str_collapsed = "";
+    string str_expanded = "true";
+    string str_heading_name = "";
+    string str_target_name = "";
+    string str_show = "show";
+    List<Categorys> Category1 = new List<Categorys>();
+    List<Categorys> Category2 = new List<Categorys>();
+    using (z_repoCategorys cate = new z_repoCategorys())
+    {
+        Category1 = cate.GetShopCategory1();
+    }
+}
+
+<div class="row mb-5">
+    <div class="col-md-9 order-2">
+        <div class="row">
+            <div class="col-md-12 mb-5">
+                <div class="float-md-left mb-4">
+                    <h2 class="text-black h5 fw-bold">商品分類： @ShopService.CategoryName</h2>
+                </div>
+                <div class="d-flex">
+                    <div class="dropdown mr-1 ml-md-auto">
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuReference" data-toggle="dropdown">@ShopService.SortName</button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+                            <a class="dropdown-item" href="@Url.Action("Sort" , "Shop" , new { area = "" , id = "Hot"})">熱門商品</a>
+                            <a class="dropdown-item" href="@Url.Action("Sort" , "Shop" , new { area = "" , id = "NameAsc"})">依名稱,由小到大</a>
+                            <a class="dropdown-item" href="@Url.Action("Sort" , "Shop" , new { area = "" , id = "NameDesc"})">依名稱,由大到小</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="@Url.Action("Sort" , "Shop" , new { area = "" , id = "PriceAsc"})">依價格,由小到大</a>
+                            <a class="dropdown-item" href="@Url.Action("Sort" , "Shop" , new { area = "" , id = "PriceDesc"})">依價格,由大到小</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.Partial("~/Views/PartialViews/_PartialShopPage.cshtml")
+        <div class="row mb-5">
+            @foreach (var item in Model.ProdList)
+            {
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="block-4 text-center border">
+                        <figure class="block-4-image">
+                            <a href="@Url.Action("Detail" , "Shop" , new { area = "" , id = item.ProdNo})">
+                                <img src="@Url.Content(ShopService.GetProductImageUrl(item.ProdNo))" alt="Image placeholder" class="img-fluid">
+                            </a>
+                        </figure>
+                        <div class="block-4-text p-4">
+                            <h3><a href="@Url.Action("Detail" , "Shop" , new { area = "" , id = item.ProdNo})">@item.ProdName</a></h3>
+                            @*<p class="mb-0">@item.author_name</p>
+                                <p class="mb-0">@item.publisher_name</p>*@
+                            <p class="text-primary font-weight-bold">$@item.SalePrice</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        @Html.Partial("~/Views/PartialViews/_PartialShopPage.cshtml")
+    </div>
+
+    <div class="col-md-3 order-1 mb-5 mb-md-0">
+        <div class="border p-4 rounded mb-4">
+            <h3 class="mb-3 h6 text-uppercase text-black d-block fw-bold">商品分類</h3>
+
+            <div class="accordion" id="accordionCategory">
+                @foreach (var item1 in Category1)
+                {
+                    str_heading_name = $"heading{item1.Id}";
+                    str_target_name = $"collapse{item1.Id}";
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="@str_heading_name">
+                            <button class="accordion-button @str_collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@str_target_name" aria-expanded="@str_expanded" aria-controls="@str_target_name">
+                                @item1.CategoryName
+                            </button>
+                        </h2>
+                        <div id="@str_target_name" class="accordion-collapse collapse @str_show" aria-labelledby="@str_heading_name" data-bs-parent="#accordionCategory">
+                            <div class="accordion-body">
+                                <ul class="list-unstyled mb-0">
+
+                                    @{
+                                        using (z_repoCategorys cate = new z_repoCategorys())
+                                        {
+                                            Category2 = cate.GetShopCategory2(item1.CategoryNo);
+                                        }
+                                    }
+
+                                    @foreach (var item2 in Category2)
+                                    {
+                                        <li class="mb-1">
+                                            <a href="@Url.Action("Category" , "Shop" , new { id = item2.CategoryNo})" class="d-flex">
+                                                <span>@item2.CategoryName</span>
+                                                <span class="text-black ml-auto">(@item2.ProductCounts)</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    str_collapsed = "collapsed";
+                    str_show = "";
+                    str_expanded = "false";
+                }
+            </div>
+        </div>
+
+        <div class="border p-4 rounded mb-4">
+            <div class="mb-4">
+                <h3 class="mb-3 h6 text-uppercase text-black d-block fw-bold">價格區間</h3>
+                @using (Html.BeginForm("Price", "Shop", FormMethod.Post))
+                {
+                    <div id="slider-range" class="border-primary"></div>
+                    <input type="hidden" name="price_low" id="price_low" value="@ShopService.PriceLow" />
+                    <input type="hidden" name="price_high" id="price_high" value="@ShopService.PriceHigh" />
+                    <input type="text" name="amount" id="amount" class="form-control border-0 pl-0 bg-white" disabled="" />
+                    <div>
+                        <input type="submit" value="查詢" class="btn btn-success" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="site-section site-blocks-2">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-md-7 site-section-heading pt-4">
+                    <h2>商品分類</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
+                    <a class="block-2-item" href="#">
+                        <figure class="image">
+                            <img src="@Url.Content("~/Plugins/Shoppers/images/women.jpg")" alt="" class="img-fluid">
+                        </figure>
+                        <div class="text">
+                            <span class="text-uppercase">Collections</span>
+                            <h3>Women</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
+                    <a class="block-2-item" href="#">
+                        <figure class="image">
+                            <img src="@Url.Content("~/Plugins/Shoppers/images/children.jpg")" alt="" class="img-fluid">
+                        </figure>
+                        <div class="text">
+                            <span class="text-uppercase">Collections</span>
+                            <h3>Children</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
+                    <a class="block-2-item" href="#">
+                        <figure class="image">
+                            <img src="@Url.Content("~/Plugins/Shoppers/images/men.jpg")" alt="" class="img-fluid">
+                        </figure>
+                        <div class="text">
+                            <span class="text-uppercase">Collections</span>
+                            <h3>Men</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
