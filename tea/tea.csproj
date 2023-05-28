@@ -851,10 +851,8 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\v4-shims.css" />
     <Content Include="Content\v4-shims.min.css" />
+    <Content Include="Db\SQLs\Update_Companys-AboutusText.sql" />
     <Content Include="Db\tea.mdf" />
-    <Content Include="Db\tea_log.ldf">
-      <DependentUpon>tea.mdf</DependentUpon>
-    </Content>
     <Content Include="ECPayment.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -864,6 +862,7 @@
     <Content Include="Images\Carousel\Carousel4.jpg" />
     <Content Include="Images\Carousel\Carousel5.jpg" />
     <Content Include="Images\Carousel\Carousel6.jpg" />
+    <Content Include="Images\Carousel\Carousel7.jpg" />
     <Content Include="Images\Category\Cloth\Coat.jpg" />
     <Content Include="Images\Category\Cloth\Coat\Coat01.jpg" />
     <Content Include="Images\Category\Cloth\Coat\Coat02.jpg" />

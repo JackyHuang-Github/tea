@@ -19,7 +19,9 @@ namespace tea.Controllers
         [HttpGet]
         public ActionResult About()
         {
-            ViewBag.SectionName = "關於公司";
+            //ViewBag.SectionName = "關於公司";
+            //Jacky 1120528
+            ViewBag.SectionName = "關於我們";
             return View();
         }
 

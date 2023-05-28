@@ -16,8 +16,9 @@ namespace tea
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 //defaults: new { controller = "Web", action = "Login", id = UrlParameter.Optional },
+                //Jacky 1120527
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 new string[] { "tea.Controllers" }
             );
         }

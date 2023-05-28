@@ -18,12 +18,14 @@ public static class AppService
     public static string CompanyName
     {
         //get { return SessionService.GetValue("CompanyName", "好好用科技股份有限公司"); }
+        //Jacky 1120527
         get { return SessionService.GetValue("CompanyName", "Tea 愛找茶"); }
         set { SessionService.SetValue("CompanyName", value); }
     }
     public static string CompanyShortName
     {
         //get { return SessionService.GetValue("CompanyShortName", "好好用科技"); }
+        //Jacky 1120527
         get { return SessionService.GetValue("CompanyShortName", "Tea 愛找茶"); }
         set { SessionService.SetValue("CompanyShortName", value); }
     }
@@ -46,18 +48,22 @@ public static class AppService
     public static string EnglishName
     {
         //get { return SessionService.GetValue("EnglishName", "Good Use Technology Co., Ltd."); }
+        //Jacky 1120527
         get { return SessionService.GetValue("EnglishName", "Tea Beverage Shop"); }
         set { SessionService.SetValue("EnglishName", value); }
     }
     public static string EnglishShortName
     {
         //get { return SessionService.GetValue("EnglishShortName", "Good Use Technology"); }
+        //Jacky 1120527
         get { return SessionService.GetValue("EnglishShortName", "Tea Beverage Shop"); }
         set { SessionService.SetValue("EnglishShortName", value); }
     }
     public static string AppName
     {
-        get { if (!IsConfig) Init(); return SessionService.GetValue("AppName", "好好用ERP"); }
+        //get { if (!IsConfig) Init(); return SessionService.GetValue("AppName", "好好用ERP"); }
+        //Jacky 1120528
+        get { if (!IsConfig) Init(); return SessionService.GetValue("AppName", "Tea 愛找茶"); }
         set { SessionService.SetValue("AppName", value); }
     }
     public static string AppVersion
@@ -67,12 +73,16 @@ public static class AppService
     }
     public static string AdminName
     {
-        get { return SessionService.GetValue("AdminName", "好好用後台管理"); }
+        //get { return SessionService.GetValue("AdminName", "好好用後台管理"); }
+        //Jacky 1120528
+        get { return SessionService.GetValue("AdminName", "Tea 愛找茶後台管理"); }
         set { SessionService.SetValue("AdminName", value); }
     }
     public static string ShopName
     {
-        get { return SessionService.GetValue("ShopName", "好好用購物商城"); }
+        //get { return SessionService.GetValue("ShopName", "好好用購物商城"); }
+        //Jacky 1120528
+        get { return SessionService.GetValue("ShopName", "Tea 愛找茶購物商城"); }
         set { SessionService.SetValue("ShopName", value); }
     }
     public static bool EncryptionMode
