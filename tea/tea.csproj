@@ -853,6 +853,9 @@
     <Content Include="Content\v4-shims.min.css" />
     <Content Include="Db\SQLs\Update_Companys-AboutusText.sql" />
     <Content Include="Db\tea.mdf" />
+    <Content Include="Db\tea_log.ldf">
+      <DependentUpon>tea.mdf</DependentUpon>
+    </Content>
     <Content Include="ECPayment.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
