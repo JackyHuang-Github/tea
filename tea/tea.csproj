@@ -851,9 +851,11 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\v4-shims.css" />
     <Content Include="Content\v4-shims.min.css" />
-    <Content Include="Db\SQLs\Update_Companys-AboutusText.sql" />
-    <Content Include="Db\tea.mdf" />
-    <Content Include="Db\tea_log.ldf">
+    <Content Include="App_Data\Db\SQLs\Insert_CodeData_Drink.sql" />
+    <Content Include="App_Data\Db\SQLs\Insert_Photos_Drink.sql" />
+    <Content Include="App_Data\Db\SQLs\Update_Companys-AboutusText.sql" />
+    <Content Include="App_Data\Db\tea.mdf" />
+    <Content Include="App_Data\Db\tea_log.ldf">
       <DependentUpon>tea.mdf</DependentUpon>
     </Content>
     <Content Include="ECPayment.aspx" />
@@ -990,6 +992,12 @@
     <Content Include="Images\Photo\Cloth\TShirt\TShirt03.jpg" />
     <Content Include="Images\Photo\Cloth\TShirt\TShirt04.jpg" />
     <Content Include="Images\Photo\Cloth\TShirt\TShirt05.jpg" />
+    <Content Include="Images\Photo\HandShakeBeverages\HSB001.jpg" />
+    <Content Include="Images\Photo\HandShakeBeverages\HSB002.jpg" />
+    <Content Include="Images\Photo\HandShakeBeverages\HSB003.jpg" />
+    <Content Include="Images\Photo\HandShakeBeverages\HSB004.jpg" />
+    <Content Include="Images\Photo\HandShakeBeverages\HSB005.jpg" />
+    <Content Include="Images\Photo\HandShakeBeverages\HSB006.jpg" />
     <Content Include="Images\Photo\Hat\Christmas.jpg" />
     <Content Include="Images\Photo\Hat\Christmas\Christmas01.jpg" />
     <Content Include="Images\Photo\Hat\Christmas\Christmas02.jpg" />
@@ -3037,12 +3045,12 @@
     <Content Include="Views\Shop\ProductDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Areas\Mis\Data\" />
     <Folder Include="Areas\Mis\Views\Shared\" />
     <Folder Include="Areas\User\Data\" />
     <Folder Include="Areas\User\Views\Shared\" />
     <Folder Include="Images\Forum\" />
+    <Folder Include="Images\Photo\Tea\" />
     <Folder Include="Views\Code\" />
     <Folder Include="Views\GetDataList\" />
     <Folder Include="Views\Menu\" />

@@ -6,8 +6,13 @@
     {
         using (z_repoPhotos photos = new z_repoPhotos())
         {
+            //var model = new vmPhoto();
+            //model.CodeList = datas.repo.ReadAll(m => m.BaseNo == "Photo")
+            //    .OrderBy(m => m.CodeNo).ToList();
+            //model.PhotoList = photos.GetDapperDataList("");
+            //Jacky 1120529
             var model = new vmPhoto();
-            model.CodeList = datas.repo.ReadAll(m => m.BaseNo == "Photo")
+            model.CodeList = datas.repo.ReadAll(m => m.BaseNo == "Drink")
                 .OrderBy(m => m.CodeNo).ToList();
             model.PhotoList = photos.GetDapperDataList("");
 
