@@ -42,7 +42,7 @@
                             str_image_folder = string.Format("~/Images/Photo/{0}", item.CodeNo);
                             str_image_url = string.Format("~/Images/Photo/{0}/{1}.jpg", item.CodeNo, item.FolderName);
 
-                            <div class="col-lg-4 col-md-6 portfolio-item @str_filter">
+                            <div class="col-lg-4 col-md-6 portfolio-item @str_filter" style="width: 20%;">
                                 <img src="@Url.Content(str_image_url)" class="img-fluid" alt="" />
                                 <div class="portfolio-info">
                                     <h4>@item.PhotoName</h4>
