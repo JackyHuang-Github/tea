@@ -92,8 +92,9 @@
                         { <a href="@data.TwitterUrl" class="twitter" target="_blank"><i class="bu bi-twitter"></i></a> }
                         if (!string.IsNullOrEmpty(data.FacebookUrl) && data.FacebookUrl != "#")
                         { <a href="@data.FacebookUrl" class="facebook" target="_blank"><i class="bu bi-facebook"></i></a> }
-                        if (!string.IsNullOrEmpty(data.TwitterUrl) && data.TwitterUrl != "#")
-                        { <a href="@data.TwitterUrl" class="instagram" target="_blank"><i class="bu bi-instagram"></i></a> }
+                        @*Jacky 1120530 修改為 @data.InstagramUrl *@
+                        if (!string.IsNullOrEmpty(data.InstagramUrl) && data.InstagramUrl != "#")
+                        { <a href="@data.InstagramUrl" class="instagram" target="_blank"><i class="bu bi-instagram"></i></a> }
                         if (!string.IsNullOrEmpty(data.LinkedinUrl) && data.LinkedinUrl != "#")
                         { <a href="@data.LinkedinUrl" class="linkedin" target="_blank"><i class="bu bi-linkedin"></i></a> }
                     }

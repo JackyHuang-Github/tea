@@ -56,7 +56,9 @@ namespace tea.Controllers
         [HttpGet]
         public ActionResult Photo()
         {
-            ViewBag.SectionName = "商品分類";
+            //ViewBag.SectionName = "商品分類";
+            //Jacky 1120530
+            ViewBag.SectionName = "飲品分類";
             return View();
         }
 
@@ -71,7 +73,9 @@ namespace tea.Controllers
                     TempData["ErrorMessage"] = "無明細資料!!";
                     return RedirectToAction("Photo", "Home", new { area = "" });
                 }
-                ViewBag.SectionName = "商品資訊明細";
+                //ViewBag.SectionName = "商品資訊明細";
+                //Jacky 1120530
+                ViewBag.SectionName = "飲品資訊明細";
                 return View(model);
             }
         }
@@ -100,7 +104,9 @@ namespace tea.Controllers
         {
             using (z_repoPricings price = new z_repoPricings())
             {
-                ViewBag.SectionName = "商品價格";
+                //ViewBag.SectionName = "商品價格";
+                //Jacky 1120530
+                ViewBag.SectionName = "飲品價格";
                 var model = price.repo.ReadAll()
                     .OrderBy(m => m.SortNo).ToList();
                 return View(model);

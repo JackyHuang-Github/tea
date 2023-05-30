@@ -32,10 +32,12 @@
 
     <main id="main">
         <!-- ======= Breadcrumbs ======= -->
-        <section id="breadcrumbs" class="breadcrumbs">
+        @*Jacky 1120530 增加 p-1 *@
+        <section id="breadcrumbs" class="breadcrumbs p-0">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2 class="mt-3">@ViewBag.SectionName</h2>
+                    @*Jacky 1120530 class="mt-2" 原為 "mt-3" *@
+                    <h2 class="mt-2">@ViewBag.SectionName</h2>
                     <ol>
                         <li><a href="@Url.Action("Index" , "Home" , new { area = ""})">首頁</a></li>
                         <li>@ViewBag.SectionName</li>
