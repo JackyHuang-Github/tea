@@ -854,10 +854,6 @@
     <Content Include="App_Data\Db\SQLs\Insert_CodeData_Drink.sql" />
     <Content Include="App_Data\Db\SQLs\Insert_Photos_Drink.sql" />
     <Content Include="App_Data\Db\SQLs\Update_Companys-AboutusText.sql" />
-    <Content Include="App_Data\Db\tea.mdf" />
-    <Content Include="App_Data\Db\tea_log.ldf">
-      <DependentUpon>tea.mdf</DependentUpon>
-    </Content>
     <Content Include="ECPayment.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
