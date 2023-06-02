@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "ProductDetail";
+    Layout = "~/Views/Shared/_LayoutShop.cshtml";
+}
+
+<div class="zoom-wrapper">
+    <div class="zoom-left">
+
+        <img id="zoom_03" class="zoom-img" src="~/Images/Zoom/small/image1.jpg" data-zoom-image="~/Images/Zoom/large/image1.jpg" />
+
+        <div id="gallery_01">
+
+            <a href="#" data-image="~/Images/Zoom/small/image1.jpg" data-zoom-image="~/Images/Zoom/large/image1.jpg">
+                <img id="img_01" src="~/Images/Zoom/thumb/image1.jpg" />
+            </a>
+
+            <a href="#" data-image="~/Images/Zoom/small/image2.jpg" data-zoom-image="~/Images/Zoom/large/image2.jpg">
+                <img id="img_02" src="~/Images/Zoom/thumb/image2.jpg" />
+            </a>
+
+            <a href="#" data-image="~/Images/Zoom/small/image3.jpg" data-zoom-image="~/Images/Zoom/large/image3.jpg">
+                <img id="img_03" src="~/Images/Zoom/thumb/image3.jpg" />
+            </a>
+
+            <a href="#" data-image="~/Images/Zoom/small/image4.jpg" data-zoom-image="~/Images/Zoom/large/image4.jpg">
+                <img id="img_04" src="~/Images/Zoom/thumb/image4.jpg" />
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+
+@section styles {
+    <style>
+        /* Put your css in here */
+
+        /*set a border on the images to prevent shifting*/
+        #gallery_01 img {
+            border: 2px solid blue;
+        }
+
+        /*Change the colour*/
+        #gallery_01 .active img {
+            border: 2px solid red;
+        }
+    </style>
+}
+
+@section scripts {
+    <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.17/src/jquery.ez-plus.js"></script>
+    <script>
+        // Add your javascript here
+        $(function () {
+            //initiate the plugin and pass the id of the div containing gallery images
+            $('#zoom_03').ezPlus({
+                responsive: true,
+                scrollZoom: false,
+                imageCrossfade: false,
+                easing: false,
+                borderSize: 0,
+                zoomLens: false,
+                zoomType: 'inner',
+                gallery: 'gallery_01',
+                cursor: 'pointer',
+                galleryActiveClass: 'active',
+                loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif'
+            });
+        });
+    </script>
+}
+
+@section scriptsbody {
+}

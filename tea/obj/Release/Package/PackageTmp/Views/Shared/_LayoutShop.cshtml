@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>@AppService.ShopName</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="@Url.Content("~/Plugins/Shoppers/fonts/icomoon/style.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/themes/base/jquery-ui.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/themes/base/datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/all.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/SweetAlert/sweetalert2.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/FullCalendar/5.11.0/lib/main.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/BootstrapSelect/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/DataPicker/datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/DataTimePicker/jquery.datetimepicker.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/Prism/prism.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/Shoppers/css/magnific-popup.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/Shoppers/css/owl.carousel.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/Shoppers/css/owl.theme.default.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Plugins/Shoppers/css/style.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" />
+    @RenderSection("styles", false)
+
+    <script src="@Url.Content("~/Scripts/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-3.6.0.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.13.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/modernizr-2.8.3.js")"></script>
+    <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/SweetAlert/sweetalert2.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/FullCalendar/5.11.0/lib/main.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/FullCalendar/5.11.0/lib/locales-all.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/FullCalendar/5.11.0/examples/js/theme-chooser.js")"></script>
+    <script src="@Url.Content("~/Plugins/BootstrapSelect/bootstrap-select.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/DataPicker/datepicker.js")"></script>
+    <script src="@Url.Content("~/Plugins/DataPicker/datepicker-zh-TW.js")"></script>
+    <script src="@Url.Content("~/Plugins/DataTimePicker/jquery.datetimepicker.full.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/DataTimePicker/jquery.datetimepicker.js")"></script>
+    <script src="@Url.Content("~/Plugins/Shoppers/js/popper.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/Shoppers/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/Shoppers/js/owl.carousel.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/Shoppers/js/jquery.magnific-popup.min.js")"></script>
+    <script src="@Url.Content("~/Plugins/Shoppers/js/main.js")"></script>
+    @RenderSection("scripts", false)
+
+</head>
+<body>
+
+    <div class="site-wrap">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-warning shop-header">
+            <div class="container">
+                <a class="navbar-brand" href="@Url.Action("Index" , "Shop" , new { area = "" })">
+                    <div class="">
+                        <div class="float-start">
+                            <img class="shop-logo-image" src="@Url.Content("~/Images/App/ShopLogo.png")" />
+                        </div>
+                        <div class="float-start mt-1 ms-1">
+                            <span class="shop-logo-name">@AppService.ShopName</span>
+                        </div>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("About" , "Home" , new { area = ""})">關於我們</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                商品分類
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="@Url.Action("Category" , "Shop" , new { area = "" , id = "22" })">男裝</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Category" , "Shop" , new { area = "" , id = "22" })">女裝</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <span class="icon icon-person"></span>
+                            @{ if (UserService.IsLogin)
+                                {
+                                    <span>@UserService.UserName</span>
+                                    <a href="@Url.Action("Login" , "Web")"><i class="fas fa-sign-out-alt"></i></a> }
+                                else
+                                {
+                                    <a href="@Url.Action("Login" , "Web")"><i class="fas fa-sign-in-alt"></i></a> } }
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control ms-2" type="search" placeholder="請輸入要查詢的商品" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit"><span class="icon icon-search2"></span></button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+
+        @*<header class="site-navbar" role="banner">
+                <div class="site-navbar-top">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-1 text-left">
+                                <div class="">
+                                    <div class="float-start">
+                                        <img src="@Url.Content("~/Images/App/ShopLogo.png")" class="shop-logo-image" />
+                                    </div>
+                                    <div class="float-start mt-1 ms-2">
+                                        <a href="@Url.Action("Index" , "Shop" , new { area = ""})" class="shop-logo-name">@AppService.ShopName</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 order-3 order-md-3 text-right">
+                                <div class="site-top-icons shop-header-menu">
+                                    <ul>
+                                        <li>
+                                            <span class="icon icon-person"></span>
+                                            @{ if (UserService.IsLogin)
+                                                {
+                                                    <span>@UserService.UserName</span>
+                                                    <a href="@Url.Action("Login" , "Web")">登出</a> }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("Login" , "Web")">登入</a> } }
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Cart" , "Shop" , new { area = ""})" class="site-cart">
+                                                <span class="icon icon-shopping_cart"></span>
+                                                <span class="count">@CartService.Counts</span>
+                                            </a>
+                                        </li>
+                                        <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-navigation text-right text-md-center" role="navigation">
+                    <div class="container">
+                        <ul class="site-menu js-clone-nav d-none d-md-block">
+                            <li class="has-children active">
+                                <a href="@Url.Action("Index" , "Home")">首頁</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">Menu One</a></li>
+                                    <li><a href="#">Menu Two</a></li>
+                                    <li><a href="#">Menu Three</a></li>
+                                    <li class="has-children">
+                                        <a href="#">Sub Menu</a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">Menu One</a></li>
+                                            <li><a href="#">Menu Two</a></li>
+                                            <li><a href="#">Menu Three</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-children">
+                                <a href="@Url.Action("About" , "Home")">關於我們</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">Menu One</a></li>
+                                    <li><a href="#">Menu Two</a></li>
+                                    <li><a href="#">Menu Three</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="@Url.Action("Index" , "Shop")">購物商城</a></li>
+                            <li><a href="@Url.Action("Category" , "Shop")">商品分類</a></li>
+                            <li><a href="@Url.Action("NewArrivals" , "Shop")">新貨</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>*@
+
+        <div class="bg-light py-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 mb-0">
+                        <div class="float-start">
+                            <a href="@Url.Action("Index" , "Home")">首頁</a>
+                            <span class="mx-2 mb-0">/</span>
+                            <strong class="text-black">購物商城</strong>
+                        </div>
+                        <div class="float-end site-search-icon text-right">
+                            @using (Html.BeginForm("Search", "Shop", FormMethod.Post, new { @class = "site-block-top-search" }))
+                            {
+                                <span class="icon icon-search2"></span>
+                                <input type="text" name="SearchText" id="SearchText" class="form-control border-0" placeholder="搜尋商品">}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="site-section">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </div>
+
+        <footer class="site-footer border-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="footer-heading mb-4">Navigations</h3>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <ul class="list-unstyled">
+                                    <li><a href="#">Sell online</a></li>
+                                    <li><a href="#">Features</a></li>
+                                    <li><a href="#">Shopping cart</a></li>
+                                    <li><a href="#">Store builder</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <ul class="list-unstyled">
+                                    <li><a href="#">Mobile commerce</a></li>
+                                    <li><a href="#">Dropshipping</a></li>
+                                    <li><a href="#">Website development</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <ul class="list-unstyled">
+                                    <li><a href="#">Point of sale</a></li>
+                                    <li><a href="#">Hardware</a></li>
+                                    <li><a href="#">Software</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                        <h3 class="footer-heading mb-4">Promo</h3>
+                        <a href="#" class="block-6">
+                            <img src="@Url.Content("~/Plugins/Shoppers/images/hero_1.jpg")" alt="Image placeholder" class="img-fluid rounded mb-4">
+                            <h3 class="font-weight-light  mb-0">Finding Your Perfect Shoes</h3>
+                            <p>Promo from  nuary 15 &mdash; 25, 2019</p>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="block-5 mb-5">
+                            <h3 class="footer-heading mb-4">連絡資訊</h3>
+                            <ul class="list-unstyled">
+                                <li class="address">@AppService.CompanyAddress</li>
+                                <li class="phone">@AppService.CompanyTelphone</li>
+                                <li class="email">@AppService.CompanyEmail</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-5 mt-5 text-center">
+                    <div class="col-md-12">
+                        <p>
+                            Copyright &copy; @DateTime.Today.Year 版權所有 - @AppService.ShopName
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <script src="@Url.Content("~/Scripts/ckeditor/ckeditor.js")"></script>
+    <script src="@Url.Content("~/Plugins/Prism/prism.js")"></script>
+    @RenderSection("scriptsbody", false)
+
+    
+</body>
+</html>
