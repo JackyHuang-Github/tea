@@ -40,6 +40,39 @@ namespace tea.Controllers
             }
         }
 
+        /// Jacky 1120604
+        /// <summary>
+        /// 會員註冊
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Register()
+        {
+            vmRegister model = new vmRegister();
+            return View(model);
+        }
+
+        /// Jacky 1120604
+        /// </summary>
+        /// 會員註冊
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Register(vmLogin model)
+        {
+            if (!ModelState.IsValid) return View(model);
+            using (z_repoUsers repos = new z_repoUsers())
+            {
+                bool bln_value = repos.Register(model.UserNo, model.Password);
+                if (!bln_value)
+                {
+                    ModelState.AddModelError("UserNo", "帳號或密碼輸入錯誤!!");
+                    return View(model);
+                }
+                if (!AppService.IsConfig) AppService.Init();
+                return RedirectToAction("Home", "Web", new { area = "" });
+            }
+        }
+
         public ActionResult Home()
         {
             string str_area = "";

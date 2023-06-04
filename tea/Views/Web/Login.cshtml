@@ -11,7 +11,8 @@
             <h3>@AppService.AppName</h3>
         </div>
         <div class="float-end">
-            <h3>系統登入</h3>
+            @*Jacky 1120604 改為會員登入 (原為系統登入) *@
+            <h3>會員登入</h3>
         </div>
     </div>
     <div class="card-body pt-4">
@@ -53,8 +54,14 @@
                 <hr />
                 <div class="row form-group">
                     <div class="col-md-12">
+                        @* Jacky 1120604 增加 [會員註冊] [忘記密碼] *@
                         <div class="float-start">
-                            <input type="submit" value="登入系統" class="btn btn-primary" />
+                            <input type="button" value="會員註冊" class="btn btn-info" onclick="window.location.href='@Url.Action("Register", "Web", new { area = "" })'" />
+                            <input type="button" value="忘記密碼" class="btn btn-warning" onclick="window.location.href='@Url.Action("ChangePassword", "Web", new { area = "" })'" />
+                        </div>
+                        @* Jacky 1120604 改為 float-end (原為 float-start), btn-success (原為 btn-primary) *@
+                        <div class="float-end">
+                            <input type="submit" value="登入系統" class="btn btn-success" />
                         </div>
                     </div>
                 </div>

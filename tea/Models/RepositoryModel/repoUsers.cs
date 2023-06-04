@@ -409,5 +409,43 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
         repo.SaveChanges();
         return true;
     }
+    
+    //Jacky 1120604
+    /// <summary>
+    /// 會員註冊
+    /// </summary>
+    /// <param name="userNo"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    public bool Retister(string userNo, string password)
+    {
+        bool bln_value = false;
+        UserService.Logout();
+        //處理帳號密碼加密
+        if (AppService.EncryptionMode)
+        {
+            using (CryptographyService cryp = new CryptographyService())
+            { password = cryp.SHA256Encode(password); }
+            if (AppService.DebugMode)
+            {
+                var user = repo.ReadSingle(m => m.UserNo == userNo);
+                if (user != null && string.IsNullOrEmpty(user.Password))
+                {
+                    user.Password = password;
+                    repo.Update(user);
+                    repo.SaveChanges();
+                }
+            }
+        }
+        //檢查登入帳密正確性
+        var data = repo.ReadSingle(m => m.UserNo == userNo && m.Password == password);
+        if (data != null)
+        {
+            UserService.Login(data.UserNo, data.UserName, data.RoleNo);
+            bln_value = true;
+        }
+        return bln_value;
+    }
+
     #endregion
 }
