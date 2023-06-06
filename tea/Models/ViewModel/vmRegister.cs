@@ -21,6 +21,7 @@ public class vmRegister
     [DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "確認密碼與新的密碼不相同!!")]
     public string ConfirmPassword { get; set; }
+    [Display(Name = "電子郵件")]
     [Required(ErrorMessage = "電子信箱不可空白!!")]
     [EmailAddress(ErrorMessage = "電子信箱格式錯誤!!")]
     public string ContactEmail { get; set; }

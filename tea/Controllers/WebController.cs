@@ -91,7 +91,7 @@ namespace tea.Controllers
                 using (CryptographyService crpy = new CryptographyService())
                 {
                     //檢查電子信箱重覆註冊
-                    //Jacky 1120606 檢查電子信箱重覆註冊，改為 Users (原為 Members)
+                    //Jacky 1120606 檢查電子信箱重覆註冊，資料表改為 Users (原為 Members)
                     var users = db.Users
                         .Where(m => m.ContactEmail == model.ContactEmail).FirstOrDefault();
                     if (users != null)
@@ -214,7 +214,6 @@ namespace tea.Controllers
             if (!ModelState.IsValid) return View(model);
             string str_validate_code = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20).ToUpper();
             string str_user_name = "";
-            bool bln_exists = false;
 
             //檢查電子郵件是否存在
             //using (tblAdmins admins = new tblAdmins())
@@ -229,10 +228,16 @@ namespace tea.Controllers
             //    using (tblUsers users = new tblUsers())
             //    { bln_exists = users.CheckEmailExists(model.AccountEmail, str_validate_code, out str_user_name); }
             //}
-            if (!bln_exists)
+
+            //Jacky 1120606 判斷電子信箱是否存在
+            using (z_repoUsers users = new z_repoUsers())
             {
-                ModelState.AddModelError("AccountEmail", "電子信箱不存在!!");
-                return View(model);
+                var userData = users.repo.ReadSingle(m => m.ContactEmail == model.ContactEmail);
+                if (userData == null)
+                {
+                    ModelState.AddModelError("ContactEmail", "電子信箱不存在!!");
+                    return View(model);
+                }
             }
 
             //寄出電子信箱驗證信
@@ -240,7 +245,9 @@ namespace tea.Controllers
             {
                 //sendMail.AccountForget(model.AccountEmail, str_validate_code, str_user_name);
                 //Jacky 11206006
-                sendMail.UserForget(model.AccountEmail, str_validate_code, str_user_name, );
+                //亂數產生一組8位數的密碼
+                string str_password = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8).ToUpper();
+                sendMail.UserForget(model.ContactEmail, str_validate_code, str_user_name, str_password);
             }
 
             //提示收信資訊
@@ -257,25 +264,25 @@ namespace tea.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public ActionResult ValidateForgetCode(string id)
-        {
-            ViewBag.MessageText = "";
-            if (string.IsNullOrEmpty(id)) { ViewBag.MessageText = "驗證碼空白!!"; return View(); }
-            string str_password = "";
-            using (tblAdmins admins = new tblAdmins()) { str_password = admins.ForgetPasswordReset(id); }
-            if (string.IsNullOrEmpty(str_password))
-                using (tblMembers members = new tblMembers()) { str_password = members.ForgetPasswordReset(id); }
-            if (string.IsNullOrEmpty(str_password))
-                using (tblUsers users = new tblUsers()) { str_password = users.ForgetPasswordReset(id); }
-            if (!string.IsNullOrEmpty(str_password))
-                ViewBag.MessageText = string.Format("您的密碼已重新設定成功，新的密碼為：{0}!!", str_password);
-            else
-                ViewBag.MessageText = "新的密碼重設失敗，請通知管理員!!";
-            //顯示訊息畫面
-            return View();
+        //[AllowAnonymous]
+        //[HttpGet]
+        //public ActionResult ValidateForgetCode(string id)
+        //{
+        //    ViewBag.MessageText = "";
+        //    if (string.IsNullOrEmpty(id)) { ViewBag.MessageText = "驗證碼空白!!"; return View(); }
+        //    string str_password = "";
+        //    using (tblAdmins admins = new tblAdmins()) { str_password = admins.ForgetPasswordReset(id); }
+        //    if (string.IsNullOrEmpty(str_password))
+        //        using (tblMembers members = new tblMembers()) { str_password = members.ForgetPasswordReset(id); }
+        //    if (string.IsNullOrEmpty(str_password))
+        //        using (tblUsers users = new tblUsers()) { str_password = users.ForgetPasswordReset(id); }
+        //    if (!string.IsNullOrEmpty(str_password))
+        //        ViewBag.MessageText = string.Format("您的密碼已重新設定成功，新的密碼為：{0}!!", str_password);
+        //    else
+        //        ViewBag.MessageText = "新的密碼重設失敗，請通知管理員!!";
+        //    //顯示訊息畫面
+        //    return View();
 
-        }
+        //}
     }
 }

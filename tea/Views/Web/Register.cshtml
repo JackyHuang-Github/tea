@@ -63,8 +63,13 @@
 
             <div class="row form-group mt-2">
                 <div class="col-md-12">
-                    <input type="submit" value="註冊資料" class="btn btn-primary" />
-                    @Html.ActionLink(ActionService.ReturnHome, ActionService.Home, "Web", new { area = "" }, new { @class = "btn btn-success" })
+                    <div class="float-end">
+                        <input type="submit" value="註冊資料" class="btn btn-success" />
+                    </div>
+                    <div class="float-start">
+                        @* Jacky 1120606 增加 [回到首頁] *@
+                        @Html.ActionLink("回到首頁", "Index", "Home", new { area = "" }, new { @class = "btn btn-dark" })
+                    </div>
                 </div>
             </div>
         </div>
