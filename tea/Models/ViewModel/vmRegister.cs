@@ -24,6 +24,4 @@ public class vmRegister
     [Required(ErrorMessage = "電子信箱不可空白!!")]
     [EmailAddress(ErrorMessage = "電子信箱格式錯誤!!")]
     public string ContactEmail { get; set; }
-    [Display(Name = "記住我")]
-    public bool RememberMe { get; set; }
 }

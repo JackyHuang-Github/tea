@@ -362,6 +362,7 @@
     <Compile Include="Models\AddressBooks.cs">
       <DependentUpon>dbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Admins.cs" />
     <Compile Include="Models\Applications.cs">
       <DependentUpon>dbModel.tt</DependentUpon>
     </Compile>
@@ -690,6 +691,7 @@
     <Compile Include="Models\ViewModel\vmContact.cs" />
     <Compile Include="Models\ViewModel\vmControllerModel.cs" />
     <Compile Include="Models\ViewModel\vmFileManager.cs" />
+    <Compile Include="Models\ViewModel\vmForget.cs" />
     <Compile Include="Models\ViewModel\vmGeneratorModel.cs" />
     <Compile Include="Models\ViewModel\vmHtmlEditor.cs" />
     <Compile Include="Models\ViewModel\vmLogin.cs" />
@@ -3079,6 +3081,9 @@
     <Content Include="Views\PartialViews\_PartialShopPage.cshtml" />
     <Content Include="Views\Shop\ProductDetail.cshtml" />
     <Content Include="Views\Web\Register.cshtml" />
+    <Content Include="Views\Web\Registered.cshtml" />
+    <Content Include="Views\Web\Forgeted.cshtml" />
+    <Content Include="Views\Web\Forget.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Mis\Data\" />

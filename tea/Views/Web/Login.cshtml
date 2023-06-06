@@ -56,8 +56,11 @@
                     <div class="col-md-12">
                         @* Jacky 1120604 增加 [會員註冊] [忘記密碼] *@
                         <div class="float-start">
-                            <input type="button" value="會員註冊" class="btn btn-info" onclick="window.location.href='@Url.Action("Register", "Web", new { area = "" })'" />
-                            <input type="button" value="忘記密碼" class="btn btn-warning" onclick="window.location.href='@Url.Action("ChangePassword", "Web", new { area = "" })'" />
+                            @*<input type="button" value="會員註冊" class="btn btn-info" onclick="window.location.href='@Url.Action("Register", "Web", new { area = "" })'" />*@
+                            @*<input type="button" value="忘記密碼" class="btn btn-warning" onclick="window.location.href='@Url.Action("Forget", "Web", new { area = "" })'" />*@
+                            @* Jacky 1120606 改用 @Html.ActionLink 的方式 *@
+                            @Html.ActionLink("註冊會員", "Register", "Web", new { area = ""}, new { @class = "btn btn-info" })
+                            @Html.ActionLink("忘記密碼", "Forget", "Web", new { area = "" }, new { @class = "btn btn-warning" })
                         </div>
                         @* Jacky 1120604 改為 float-end (原為 float-start), btn-success (原為 btn-primary) *@
                         <div class="float-end">
