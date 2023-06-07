@@ -391,21 +391,23 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
             errorMessage = "驗證碼空白!!";
             return false;
         }
-        var userData = repo.ReadSingle(m => m.ValidateCode == validateCode);
+
+        var user = repo.ReadSingle(m => m.ValidateCode == validateCode);
         //檢查是否合法驗證
-        if (userData == null)
+        if (user == null)
         {
             errorMessage = "驗證碼不存在!!";
             return false;
         }
-        if (userData.IsValid)
+        if (user.IsValid)
         {
             errorMessage = "會員已驗證，不可重覆驗證!!";
             return false;
         }
         //修改驗證狀態
-        userData.IsValid = true;
-        repo.Update(userData);
+        user.IsValid = true;
+        user.RoleNo = "User";
+        repo.Update(user);
         repo.SaveChanges();
         return true;
     }

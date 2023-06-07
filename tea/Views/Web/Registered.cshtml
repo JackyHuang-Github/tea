@@ -10,13 +10,15 @@
             <div class="card">
                 <div class="card-header text-center">
                     @*<h3>@SessionService.AppName - 會員註冊成功</h3>*@
-                    @*Jacky 1120607 修正錯誤*@
+                    @* Jacky 1120607 修正錯誤，改為 AppService.AppName *@
                     <h3>@AppService.AppName - 會員註冊成功</h3>
                 </div>
                 <div class="card-body">
                     <p class="card-text">@ViewBag.MessageText</p>
                     @* Jacky 1120606 變更為 Web (原為 Account) *@
-                    @Html.ActionLink("會員登入", "Login", "Web", null, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("會員登入", "Login", "Web", null, new { @class = "btn btn-primary float-start" })
+                    @* Jacky 1120607 增加 [回到首頁] *@
+                    @Html.ActionLink("回到首頁", "Index", "Home", new { area = "" }, new { @class = "btn btn-dark float-end" })
                 </div>
             </div>
         </div>
