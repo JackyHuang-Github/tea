@@ -1,0 +1,78 @@
+﻿@model vmRegister
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutLite.cshtml";
+}
+
+<div class="card card-size-small mt-5 shadow">
+    <div class="card-header text-white bg-primary">
+        <div class="float-start">
+            <h3>@AppService.AppName</h3>
+        </div>
+        <div class="float-end">
+            <h3>會員註冊</h3>
+        </div>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal mt-2">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row form-group">
+                @Html.LabelFor(model => model.UserNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UserNo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-group">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-group">
+                @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-group">
+                @Html.LabelFor(model => model.ContactEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ContactEmail, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row form-group mt-2">
+                <div class="col-md-12">
+                    <div class="float-end">
+                        <input type="submit" value="註冊資料" class="btn btn-success" />
+                    </div>
+                    <div class="float-start">
+                        @* Jacky 1120606 增加 [回到首頁] *@
+                        @Html.ActionLink("回到首頁", "Index", "Home", new { area = "" }, new { @class = "btn btn-dark" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

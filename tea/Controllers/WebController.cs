@@ -127,16 +127,34 @@ namespace tea.Controllers
                     db.Users.Add(users);
                     db.SaveChanges();
 
+                    var message = "";
                     //寄出電子信箱驗證信
                     using (SendMailService sendMail = new SendMailService())
                     {
-                        sendMail.UserRegister(str_validate_code);
+                        message = sendMail.UserRegister(str_validate_code);
                     }
 
-                    //顯示註冊完成並提示收信資訊
-                    return RedirectToAction("Registered");
+                    if (message == "")
+                    {
+                        //顯示註冊完成並提示收信資訊
+                        return RedirectToAction("Registered");
+                    }
+                    else
+                    {
+                        return View(model);
+                    }
                 }
             }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Registered()
+        {
+            ViewBag.MessageText = "親愛的會員您好，您的註冊已完成，";
+            ViewBag.MessageText += "請您記得到您的電子信箱中執行電子信箱的驗證功能";
+            ViewBag.MessageText += "，以完成正式會員的資格!!";
+            return View();
         }
 
         [HttpGet]
@@ -160,7 +178,7 @@ namespace tea.Controllers
                     ModelState.AddModelError("OldPassword", "密碼輸入錯誤!!");
                     return View(model);
                 }
-                TempData["ErrorMessage"] = "密嗎已成功變更!!";
+                TempData["ErrorMessage"] = "密碼已成功變更!!";
                 return RedirectToAction("Index", "Home", new { area = UserService.RoleNo });
             }
         }

@@ -2073,7 +2073,6 @@
     <Content Include="Plugins\Shoppers\scss\_site-blocks.scss" />
     <Content Include="Plugins\Shoppers\scss\_site-navbar.scss" />
     <Content Include="Plugins\Company\assets\vendor\swiper\swiper-bundle.min.js.map" />
-    <None Include="Properties\PublishProfiles\niceadmin - Web Deploy.pubxml" />
     <Content Include="Plugins\Prism\prism.css" />
     <Content Include="Plugins\Prism\prism.js" />
     <Content Include="Plugins\Shoppers\about.html" />
@@ -2129,8 +2128,6 @@
     <Content Include="Plugins\SweetAlert\sweetalert2.js" />
     <Content Include="Plugins\SweetAlert\sweetalert2.min.css" />
     <Content Include="Plugins\SweetAlert\sweetalert2.min.js" />
-    <Content Include="Properties\PublishProfiles\IISProfile.pubxml.user" />
-    <Content Include="Properties\PublishProfiles\niceadmin - Web Deploy.pubxml.user" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -2950,6 +2947,7 @@
     <Content Include="Scripts\ckeditor\LICENSE.md" />
     <Content Include="Scripts\ckeditor\CHANGES.md" />
     <Content Include="Scripts\ckeditor\bender-runner.config.json" />
+    <None Include="Properties\PublishProfiles\localhost_web_deploy.pubxml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\ckeditor\styles.js" />
     <Content Include="Scripts\ckeditor\vendor\promise.js" />

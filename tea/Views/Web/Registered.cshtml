@@ -9,11 +9,14 @@
         <div class="message-box">
             <div class="card">
                 <div class="card-header text-center">
-                    <h3>@SessionService.AppName - 會員註冊成功</h3>
+                    @*<h3>@SessionService.AppName - 會員註冊成功</h3>*@
+                    @*Jacky 1120607 修正錯誤*@
+                    <h3>@AppService.AppName - 會員註冊成功</h3>
                 </div>
                 <div class="card-body">
                     <p class="card-text">@ViewBag.MessageText</p>
-                    @Html.ActionLink("會員登入", "Login", "Account", null, new { @class = "btn btn-primary" })
+                    @* Jacky 1120606 變更為 Web (原為 Account) *@
+                    @Html.ActionLink("會員登入", "Login", "Web", null, new { @class = "btn btn-primary" })
                 </div>
             </div>
         </div>
