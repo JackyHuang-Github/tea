@@ -28,12 +28,10 @@ public class SendMailService : BaseClass
                 string str_member_name = userData.UserName;
                 string str_member_email = userData.ContactEmail;
                 string str_reg_date = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
-
                 string str_controller = "Web";
                 string str_action = "ValidateEmail";
                 string str_url = AppService.WebSiteUrl;
                 string str_validate_url = $"{str_url}/{str_controller}/{str_action}/{validateCode}";
-
                 //信件內容
                 gmail.MessageText = "";
                 gmail.ReceiverName = str_member_name;

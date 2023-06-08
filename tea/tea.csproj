@@ -702,6 +702,7 @@
     <Compile Include="Models\ViewModel\vmRepositoryModel.cs" />
     <Compile Include="Models\ViewModel\vmSelectListItem.cs" />
     <Compile Include="Models\ViewModel\vmShopIndex.cs" />
+    <Compile Include="Models\ViewModel\vmValidateEmail.cs" />
     <Compile Include="Models\ViewModel\vmViewModel.cs" />
     <Compile Include="Models\WorkflowDetails.cs">
       <DependentUpon>dbModel.tt</DependentUpon>
@@ -3082,6 +3083,7 @@
     <Content Include="Views\Web\Registered.cshtml" />
     <Content Include="Views\Web\Forgeted.cshtml" />
     <Content Include="Views\Web\Forget.cshtml" />
+    <Content Include="Views\Web\ValidateEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Mis\Data\" />
