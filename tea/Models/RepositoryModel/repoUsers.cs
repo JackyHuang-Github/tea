@@ -384,40 +384,32 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
     /// <param name="validateCode">驗證碼</param>
     /// <param name="errorMessage">錯誤訊息</param>
     /// <returns></returns>
-    /// Jacky 1120608 整個改寫 (參考 bookstore / AccountController-ValidateForgetCode / ValidateForgetCode.cshtml )
-    public string ValidateEmail(string validateCode)
+    public bool ValidateEmail(string validateCode, ref string errorMessage)
     {
-        string str_message = "";
-
         if (string.IsNullOrEmpty(validateCode))
         {
-            str_message = "驗證碼空白!!";
-            return str_message;
+            errorMessage = "驗證碼空白!!";
+            return false;
         }
-
-        var user = repo.ReadSingle(m => m.ValidateCode == validateCode);
+        var userData = repo.ReadSingle(m => m.ValidateCode == validateCode);
         //檢查是否合法驗證
-        if (user == null)
+        if (userData == null)
         {
-            str_message = "驗證碼不存在!!";
-            return str_message;
+            errorMessage = "驗證碼不存在!!";
+            return false;
         }
-        if (user.IsValid)
+        if (userData.IsValid)
         {
-            str_message = "會員已驗證，不可重覆驗證!!";
-            return str_message;
+            errorMessage = "會員已驗證，不可重覆驗證!!";
+            return false;
         }
-
         //修改驗證狀態
-        user.IsValid = true;
-        user.RoleNo = "User";
-        user.ValidateCode = "";
-        repo.Update(user);
-        repo.SaveChanges();
-
-        return str_message;
+        userData.IsValid = true;
+        repo.Update(userData);
+        errorMessage = repo.SaveChanges();
+        return errorMessage == "";
     }
-    
+
     //Jacky 1120604
     /// <summary>
     /// 會員註冊

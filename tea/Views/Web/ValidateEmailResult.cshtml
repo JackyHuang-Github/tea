@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "ValidateEmailResult";
+    Layout = "~/Views/Shared/_LayoutLite.cshtml";
+}
+
+<div class="card border-secondary my-5 card-size-medium">
+    <div class="card-header text-white bg-primary">驗證訊息結果</div>
+    <div class="card-body text-secondary">
+        <h5 class="card-title">@TempData["MessageText"]</h5>
+        <br />
+        @Html.ActionLink("返回登入頁", "Login", "User", new { area = "" }, new { @class = "btn btn-primary" })
+    </div>
+</div>

@@ -213,69 +213,35 @@ namespace tea.Controllers
         /// 使用者註冊電子信箱驗證
         /// </summary>
         /// <returns></returns>
-        /// Jacky 1120608 整個改寫 (參考 bookstore / AccountController-ValidateForgetCode / ValidateForgetCode.cshtml )
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult ValidateEmail(string validateCode)
+        public ActionResult ValidateEmail(string id)
         {
-            string str_message = "";
-            ViewBag.MessageText = "";
-
-            using (z_repoUsers repoUsers = new z_repoUsers())
+            using (z_repoUsers users = new z_repoUsers())
             {
-                str_message = repoUsers.ValidateEmail(validateCode);
+                var userData = users.repo.ReadSingle(m => m.ValidateCode == id);
 
-                //if (!Users.ValidateEmail(id, ref str_message))
-                //    TempData["Message"] = str_message;
-                //else
-                //{
-                //    //記錄會員註冊驗證成功時間
-                //    using (z_repoLogs logs = new z_repoLogs())
-                //    {
-                //        logs.EventLogCount(enLogType.EmailSend, userData.UserNo, id);
-                //    }
-                //    TempData["Message"] = "員工電子郵件已驗證成功，您可以進入登入頁登入系統!!";
-                //}
-
-                ViewBag.Message = str_message;
-
+                string str_message = "";
+                if (!users.ValidateEmail(id, ref str_message))
+                    TempData["MessageText"] = str_message;
+                else
+                {
+                    //記錄會員註冊驗證成功時間
+                    using (z_repoLogs logs = new z_repoLogs())
+                    {
+                        logs.EventLogCount(enLogType.EmailSend, userData.UserNo, id);
+                    }
+                    TempData["MessageText"] = "員工電子郵件已驗證成功，您可以進入登入頁登入系統!!";
+                }
                 //顯示訊息畫面
-                return RedirectToAction("Login", "Web", new { area = "" });
+                return RedirectToAction("ValidateEmailResult", "Web", new { area = "" });
             }
         }
 
-        public string ValidateCode(string validateCode)
+        public ActionResult ValidateEmailResult()
         {
-            string str_message = "";
-
-            if (string.IsNullOrEmpty(validateCode))
-            {
-                str_message = "驗證碼空白!!";
-                return str_message;
-            }
-
-            repo = new EFGenericRepository<Users>(new dbEntities());
-            var user = repo.ReadSingle(m => m.ValidateCode == validateCode);
-            //檢查是否合法驗證
-            if (user == null)
-            {
-                str_message = "驗證碼不存在!!";
-                return str_message;
-            }
-            if (user.IsValid)
-            {
-                str_message = "會員已驗證，不可重覆驗證!!";
-                return str_message;
-            }
-
-            //修改驗證狀態
-            user.IsValid = true;
-            user.RoleNo = "User";
-            user.ValidateCode = "";
-            repo.Update(user);
-            repo.SaveChanges();
-
-            return str_message;
+            ViewBag.Message = TempData["MessageText"].ToString();
+            return View();
         }
 
         /// <summary>

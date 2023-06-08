@@ -3084,6 +3084,7 @@
     <Content Include="Views\Web\Forgeted.cshtml" />
     <Content Include="Views\Web\Forget.cshtml" />
     <Content Include="Views\Web\ValidateEmail.cshtml" />
+    <Content Include="Views\Web\ValidateEmailResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Mis\Data\" />

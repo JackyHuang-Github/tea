@@ -17,7 +17,7 @@
         <div class="form-horizontal">
             <div class="row form-group">
                 <div class="col-md-12">
-                    <p class="card-text">@ViewBag.Message</p>
+                    <p class="card-text">@TempData["MessageText"]</p>
                     @Html.ActionLink("會員登入", "Login", "Web", new { area = "" }, new { @class = "btn btn-primary float-start" })
                     @Html.ActionLink("回到首頁", "Index", "Home", new { area = "" }, new { @class = "btn btn-dark float-end" })
                 </div>
