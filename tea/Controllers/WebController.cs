@@ -49,14 +49,34 @@ namespace tea.Controllers
             // 2. 判斷登入資料是否正確，不正確時手動引發一個錯誤
             using (z_repoUsers repos = new z_repoUsers())
             {
-                bool bln_value = repos.Login(model.UserNo, model.Password);
-                if (!bln_value)
+                /// Jacky 1120609 回傳值改為數值 (0:成功 -1:帳號或密碼錯誤 -2:帳號尚未驗證成功)
+                //bool bln_value = repos.Login(model.UserNo, model.Password);
+                int result = repos.Login(model.UserNo, model.Password);
+                switch (result)
                 {
-                    ModelState.AddModelError("UserNo", "帳號或密碼輸入錯誤!!");
-                    return View(model);
+                    case 0:             // 成功
+                        if (!AppService.IsConfig) AppService.Init();
+                        return RedirectToAction("Home", "Web", new { area = "" });
+                        break;
+                    case -1:
+                        ModelState.AddModelError("UserNo", "帳號或密碼輸入錯誤!!");
+                        return View(model);
+                        break;
+                    case -2:
+                        ModelState.AddModelError("UserNo", "帳號尚未驗證成功!!");
+                        return View(model);
+                        break;
+                    default:
+                        ModelState.AddModelError("UserNo", "狀態碼 result 尚未定義！");
+                        return View(model);
+                        break;
                 }
-                if (!AppService.IsConfig) AppService.Init();
-                return RedirectToAction("Home", "Web", new { area = "" });
+
+                //if (!bln_value)
+                //{
+                //    ModelState.AddModelError("UserNo", "帳號或密碼輸入錯誤!!");
+                //    return View(model);
+                //}
             }
         }
 
@@ -150,18 +170,16 @@ namespace tea.Controllers
                     using (SendMailService sendMail = new SendMailService())
                     {
                         errorMessage = sendMail.UserRegister(str_ValidateCode);
-                    }
-
-                    //Jacky 1120607
-                    if (errorMessage == "")
-                    {
-                        //顯示註冊完成並提示收信資訊
-                        return RedirectToAction("Registered");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("ContactEmail", errorMessage);
-                        return View(model);
+                        if (errorMessage == "")
+                        {
+                            //顯示註冊完成並提示收信資訊
+                            return RedirectToAction("Registered");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("ContactEmail", errorMessage);
+                            return View(model);
+                        }
                     }
                 }
             }
@@ -233,7 +251,9 @@ namespace tea.Controllers
                     }
                     TempData["MessageText"] = "員工電子郵件已驗證成功，您可以進入登入頁登入系統!!";
                 }
-                //顯示訊息畫面
+             
+                // Jacky 1120608
+                // 顯示訊息畫面
                 return RedirectToAction("ValidateEmailResult", "Web", new { area = "" });
             }
         }

