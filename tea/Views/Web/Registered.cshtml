@@ -4,20 +4,22 @@
     Layout = "~/Views/Shared/_LayoutLite.cshtml";
 }
 
-<div class="form-screen">
-    <div class="form-horizontal">
-        <div class="message-box">
-            <div class="card">
-                <div class="card-header text-center">
-                    @*<h3>@SessionService.AppName - 會員註冊成功</h3>*@
-                    @* Jacky 1120607 修正錯誤，改為 AppService.AppName *@
-                    <h3>@AppService.AppName - 會員註冊成功</h3>
-                </div>
-                <div class="card-body">
+@* Jacky 1120610 *@
+<div class="card card-size-small mt-5 shadow">
+    <div class="card-header text-white bg-primary">
+        <div class="float-start">
+            <h3>@AppService.AppName</h3>
+        </div>
+        <div class="float-end">
+            <h3>會員註冊成功</h3>
+        </div>
+    </div>
+    <div class="card-body pt-4">
+        <div class="form-horizontal">
+            <div class="row form-group">
+                <div class="col-md-12">
                     <p class="card-text">@ViewBag.MessageText</p>
-                    @* Jacky 1120606 變更為 Web (原為 Account) *@
-                    @Html.ActionLink("會員登入", "Login", "Web", null, new { @class = "btn btn-primary float-center" })
-                    @* Jacky 1120607 增加 [回到首頁] *@
+                    @Html.ActionLink("會員登入", "Login", "Web", new { area = "" }, new { @class = "btn btn-primary float-start" })
                     @Html.ActionLink("回到首頁", "Index", "Home", new { area = "" }, new { @class = "btn btn-dark float-end" })
                 </div>
             </div>

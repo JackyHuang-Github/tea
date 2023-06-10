@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+/// <summary>
+/// Jacky 1120610 增加 ForgetValidate
+/// </summary>
 public enum enLogType
 {
     EmailSend,
@@ -10,5 +13,6 @@ public enum enLogType
     UserLogout,
     PrgOpen,
     UserRegister,
-    EmailValidate
+    EmailValidate,
+    ForgetValidate
 }

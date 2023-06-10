@@ -54,15 +54,16 @@ public class SendMailService : BaseClass
         }
     }
 
+    /// Jacky 1120610 改參數 userNewPassword (原參數 userPassword)
     /// <summary>
     /// 帳號忘記密碼寄發密碼重設的電子郵件
     /// </summary>
     /// <param name="emailAddress">電子郵件</param>
     /// <param name="validateCode">驗證碼</param>
     /// <param name="UserName">會員名稱</param>
-    /// <param name="userPassword">新的密碼</param>
+    /// <param name="userNewPassword">新的密碼</param>
     /// <returns></returns>
-    public string UserForget(string emailAddress, string validateCode, string UserName, string userPassword)
+    public string UserForget(string emailAddress, string validateCode, string UserName, string userNewPassword)
     {
         using (GmailService gmail = new GmailService())
         {
@@ -70,7 +71,8 @@ public class SendMailService : BaseClass
             //變數
             string str_reg_date = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
 
-            string str_controller = "Shop";
+            // Jacky 1120610 Controller 改為 Web (原為 Shop)
+            string str_controller = "Web";
             string str_action = "ValidateForget";
             string str_url = AppService.WebSiteUrl;
             string str_validate_url = $"{str_url}/{str_controller}/{str_action}/{validateCode}";
@@ -82,13 +84,16 @@ public class SendMailService : BaseClass
             gmail.Subject = string.Format("{0} 帳號忘記密碼重新設定通知信", AppService.AppName);
             gmail.Body = string.Format("敬愛的會員 {0} 您好!! <br /><br />", UserName);
             gmail.Body += string.Format("您於 {0} 在我們網站執行了忘記密碼的功能，<br /><br />", str_reg_date);
-            gmail.Body += string.Format("您新的密碼為： {0} <br /><br />", userPassword);
+            gmail.Body += string.Format("您新的密碼為： {0} <br /><br />", userNewPassword);
             gmail.Body += "請您點擊以下連結進行忘記密碼驗證，並再自行變更您熟悉的密碼！！<br /><br />";
             gmail.Body += string.Format("<a href=\"{0}\" target=\"_blank\">{1}</a><br /><br />", str_validate_url, str_validate_url);
             gmail.Body += "本信件為系統自動寄出,請勿回覆!!<br /><br />";
             gmail.Body += "-------------------------------------------<br />";
             gmail.Body += string.Format("{0}<br />", AppService.AppName);
-            gmail.Body += string.Format("{0}/Shop<br />", str_url);
+
+            // Jacky 1120610 改為 Web (原為 Shop)
+            gmail.Body += string.Format("{0}/Web<br />", str_url);
+            
             gmail.Body += "-------------------------------------------<br />";
             //寄信
             gmail.Send();

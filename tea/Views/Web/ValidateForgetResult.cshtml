@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "ValidateForgateResult";
+    Layout = "~/Views/Shared/_LayoutLite.cshtml";
+}
+
+@* Jacky 1120610 製作 *@
+<div class="card border-secondary my-5 card-size-medium">
+    <div class="card-header text-white bg-primary">驗證訊息結果</div>
+    <div class="card-body text-secondary">
+        <h5 class="card-title">@ViewBag.MessageText</h5>
+        <br />
+        @Html.ActionLink("返回登入頁", "Login", "Web", new { area = "" }, new { @class = "btn btn-primary float-center" })
+        @Html.ActionLink("回到首頁", "Index", "Home", new { area = "" }, new { @class = "btn btn-dark float-end" })
+    </div>
+</div>

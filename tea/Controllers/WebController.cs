@@ -33,6 +33,10 @@ namespace tea.Controllers
             return RedirectToAction(str_action, str_controller, new { area = str_area });
         }
 
+        /// <summary>
+        /// 登入
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Login()
         {
@@ -41,6 +45,11 @@ namespace tea.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// 登入
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Login(vmLogin model)
         {
@@ -54,22 +63,21 @@ namespace tea.Controllers
                 int result = repos.Login(model.UserNo, model.Password);
                 switch (result)
                 {
-                    case 0:             // 成功
+                    case 0:             
+                        // 成功
                         if (!AppService.IsConfig) AppService.Init();
                         return RedirectToAction("Home", "Web", new { area = "" });
-                        break;
                     case -1:
-                        ModelState.AddModelError("UserNo", "帳號或密碼輸入錯誤!!");
+                        // 帳號或密碼錯誤
+                        ModelState.AddModelError("UserNo", "帳號或密碼輸入錯誤！");
                         return View(model);
-                        break;
                     case -2:
-                        ModelState.AddModelError("UserNo", "帳號尚未驗證成功!!");
+                        // 帳號尚未驗證成功
+                        ModelState.AddModelError("UserNo", "帳號尚未驗證成功！");
                         return View(model);
-                        break;
                     default:
                         ModelState.AddModelError("UserNo", "狀態碼 result 尚未定義！");
                         return View(model);
-                        break;
                 }
 
                 //if (!bln_value)
@@ -80,6 +88,10 @@ namespace tea.Controllers
             }
         }
 
+        /// <summary>
+        /// 登出
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Logout()
         {
             UserService.Logout();
@@ -141,19 +153,6 @@ namespace tea.Controllers
                     }
 
                     // Jacky 1120606
-                    //Members newData = new Members();
-                    //newData.member_name = model.AccountName;
-                    //newData.member_password = str_password;
-                    //newData.gender_code = model.GenderCode;
-                    //newData.birth_date = model.Birthday;
-                    //newData.contact_email = model.ContactEmail;
-                    //newData.contact_phone = model.ContactPhone;
-                    //newData.contact_address = model.ContactAddress;
-                    //newData.IsValid = false;
-                    //newData.ValidateCode = str_ValidateCode;
-                    //db.Members.Add(newData);
-
-                    // Jacky 1120606
                     users = new Models.Users();
                     users.UserNo = model.UserNo;
                     users.UserName = model.UserName;
@@ -185,6 +184,10 @@ namespace tea.Controllers
             }
         }
 
+        /// <summary>
+        /// 顯示會員註冊結果
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Registered()
@@ -195,6 +198,10 @@ namespace tea.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 變更密碼
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [LoginAuthorize()]
         public ActionResult ChangePassword()
@@ -203,6 +210,11 @@ namespace tea.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// 變更密碼
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [LoginAuthorize()]
         public ActionResult ChangePassword(vmChangePassword model)
@@ -220,12 +232,6 @@ namespace tea.Controllers
                 return RedirectToAction("Index", "Home", new { area = UserService.RoleNo });
             }
         }
-
-        //public ActionResult ValidateEmail()
-        //{
-        //    vmValidateEmail model = new vmValidateEmail();
-        //    return View(model);
-        //}
 
         /// <summary>
         /// 使用者註冊電子信箱驗證
@@ -247,9 +253,10 @@ namespace tea.Controllers
                     //記錄會員註冊驗證成功時間
                     using (z_repoLogs logs = new z_repoLogs())
                     {
+                        // Jacky 1120610 改為 enLogType.EmailValidate (原為 enLogType.EmailSend)
                         logs.EventLogCount(enLogType.EmailSend, userData.UserNo, id);
                     }
-                    TempData["MessageText"] = "員工電子郵件已驗證成功，您可以進入登入頁登入系統!!";
+                    TempData["MessageText"] = "會員電子郵件已驗證成功，您可以進入登入頁登入系統!!";
                 }
              
                 // Jacky 1120608
@@ -258,9 +265,13 @@ namespace tea.Controllers
             }
         }
 
+        /// <summary>
+        /// 顯示使用者註冊電子信箱驗證結果
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ValidateEmailResult()
         {
-            ViewBag.Message = TempData["MessageText"].ToString();
+            ViewBag.MessageText = TempData["MessageText"].ToString();
             return View();
         }
 
@@ -276,47 +287,36 @@ namespace tea.Controllers
             return View(model);
         }
 
+        // Jacky 1120610 改寫
         [AllowAnonymous]
         [HttpPost]
         public ActionResult Forget(vmForget model)
         {
             if (!ModelState.IsValid) return View(model);
-            string str_ValidateCode = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20).ToUpper();
-            string str_user_name = "";
 
-            //檢查電子郵件是否存在
-            //using (tblAdmins admins = new tblAdmins())
-            //{ bln_exists = admins.CheckEmailExists(model.AccountEmail, str_ValidateCode, out str_user_name); }
-            //if (!bln_exists)
-            //{
-            //    using (tblMembers members = new tblMembers())
-            //    { bln_exists = members.CheckEmailExists(model.AccountEmail, str_ValidateCode, out str_user_name); }
-            //}
-            //if (!bln_exists)
-            //{
-            //    using (tblUsers users = new tblUsers())
-            //    { bln_exists = users.CheckEmailExists(model.AccountEmail, str_ValidateCode, out str_user_name); }
-            //}
-
-            //Jacky 1120606 判斷電子信箱是否存在
             using (z_repoUsers users = new z_repoUsers())
             {
+                // 判斷電子信箱是否存在
                 var userData = users.repo.ReadSingle(m => m.ContactEmail == model.ContactEmail);
                 if (userData == null)
                 {
                     ModelState.AddModelError("ContactEmail", "電子信箱不存在!!");
                     return View(model);
                 }
-            }
+                else
+                {
+                    using (SendMailService sendMail = new SendMailService())
+                    {
+                        // 產生驗證碼
+                        string str_ValidateCode = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20).ToUpper();
+                        // 亂數產生一組8位數的新密碼
+                        string str_new_password = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8).ToUpper();
+                        string str_user_name = userData.UserName;
 
-            //寄出電子信箱驗證信
-            using (SendMailService sendMail = new SendMailService())
-            {
-                //sendMail.AccountForget(model.AccountEmail, str_ValidateCode, str_user_name);
-                //Jacky 11206006
-                //亂數產生一組8位數的密碼
-                string str_password = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8).ToUpper();
-                sendMail.UserForget(model.ContactEmail, str_ValidateCode, str_user_name, str_password);
+                        // 寄出電子信箱驗證信
+                        sendMail.UserForget(model.ContactEmail, str_ValidateCode, str_user_name, str_new_password);
+                    }
+                }
             }
 
             //提示收信資訊
@@ -328,30 +328,51 @@ namespace tea.Controllers
         public ActionResult Forgeted()
         {
             ViewBag.MessageText = "您的忘記密碼需求已核准，";
-            ViewBag.MessageText += "請您到您的電子信箱中執行忘記密碼的驗證功能";
-            ViewBag.MessageText += "，以完成密碼重設的目的!!";
+            ViewBag.MessageText += "請您到您的電子信箱中執行忘記密碼重寄的驗證功能，";
+            ViewBag.MessageText += "以完成密碼重設的目的!!";
             return View();
         }
 
-        //[AllowAnonymous]
-        //[HttpGet]
-        //public ActionResult ValidateForgetCode(string id)
-        //{
-        //    ViewBag.MessageText = "";
-        //    if (string.IsNullOrEmpty(id)) { ViewBag.MessageText = "驗證碼空白!!"; return View(); }
-        //    string str_password = "";
-        //    using (tblAdmins admins = new tblAdmins()) { str_password = admins.ForgetPasswordReset(id); }
-        //    if (string.IsNullOrEmpty(str_password))
-        //        using (tblMembers members = new tblMembers()) { str_password = members.ForgetPasswordReset(id); }
-        //    if (string.IsNullOrEmpty(str_password))
-        //        using (tblUsers users = new tblUsers()) { str_password = users.ForgetPasswordReset(id); }
-        //    if (!string.IsNullOrEmpty(str_password))
-        //        ViewBag.MessageText = string.Format("您的密碼已重新設定成功，新的密碼為：{0}!!", str_password);
-        //    else
-        //        ViewBag.MessageText = "新的密碼重設失敗，請通知管理員!!";
-        //    //顯示訊息畫面
-        //    return View();
+        // Jacky 1120610 增加
+        /// <summary>
+        /// 使用者忘記密碼驗證
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult ValidateForget(string id)
+        {
+            using (z_repoUsers users = new z_repoUsers())
+            {
+                var userData = users.repo.ReadSingle(m => m.ValidateCode == id);
 
-        //}
+                string str_message = "";
+                if (!users.ValidateForget(id, ref str_message))
+                    TempData["MessageText"] = str_message;
+                else
+                {
+                    // 記錄忘記密碼驗證成功時間
+                    using (z_repoLogs logs = new z_repoLogs())
+                    {
+                        logs.EventLogCount(enLogType.ForgetValidate, userData.UserNo, id);
+                    }
+                    TempData["MessageText"] = "會員密碼重寄已驗證成功，您可以進入登入頁登入系統!!";
+                }
+
+                // 顯示訊息畫面
+                return RedirectToAction("ValidateForgetResult", "Web", new { area = "" });
+            }
+        }
+
+        /// <summary>
+        /// 顯示使用者忘記密碼驗證結果
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ValidateForgetResult()
+        {
+            ViewBag.MessageText = TempData["MessageText"].ToString();
+            return View();
+        }
     }
 }

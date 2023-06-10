@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2019.Drawing.Model3D;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -240,14 +242,15 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
     /// Jacky 1120609 回傳值改為數值 (0:成功 -1:帳號或密碼錯誤 -2:帳號尚未驗證成功)
     public int Login(string userNo, string password)
     {
-        //bool bln_value = false;
         int result = 0;             // 成功
         UserService.Logout();
+
         //處理帳號密碼加密
         if (AppService.EncryptionMode)
         {
             using (CryptographyService cryp = new CryptographyService())
             { password = cryp.SHA256Encode(password); }
+           
             if (AppService.DebugMode)
             {
                 var user = repo.ReadSingle(m => m.UserNo == userNo);
@@ -259,6 +262,7 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
                 }
             }
         }
+
         //檢查登入帳密正確性
         var data = repo.ReadSingle(m => m.UserNo == userNo && m.Password == password);
         if (data != null)
@@ -266,12 +270,14 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
             if (data.IsValid)
             {
                 UserService.Login(data.UserNo, data.UserName, data.RoleNo);
-                //bln_value = true;
+                HttpContext.Current.Session["UserNo"] = data.UserNo;
+                HttpContext.Current.Session["UserName"] = data.UserName;
+                HttpContext.Current.Session["RoleNo"] = data.RoleNo;
                 result = 0;         // 成功
             }
             else
             {
-                result = -2;        //  
+                result = -2;        // 帳號尚未驗證成功
             }
         }
         else
@@ -279,203 +285,7 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
             result = -1;            // 帳號或密碼錯誤
         }
 
-        //return bln_value;
-
         return result;
-    }
-    /// <summary>
-    /// 重設密碼
-    /// </summary>
-    /// <param name="id">Id</param>
-    public bool ResetPassword(int id)
-    {
-        bool bln_value = false;
-        //檢查舊密碼正確性
-        var data = repo.ReadSingle(m => m.Id == id);
-        if (data != null)
-        {
-            string str_password = data.UserNo;
-            //處理帳號密碼加密
-            if (AppService.EncryptionMode)
-            {
-                using (CryptographyService cryp = new CryptographyService())
-                {
-                    str_password = cryp.SHA256Encode(data.UserNo);
-                }
-            }
-            //變更為新密碼
-            using (DapperRepository dp = new DapperRepository())
-            {
-                dp.CommandText = "UPDATE Users SET Password =  @Password  WHERE Id = @Id";
-                dp.ParametersAdd("Id", id, true);
-                dp.ParametersAdd("Password", str_password, false);
-                dp.Execute();
-                bln_value = true;
-            }
-
-
-            //data.Password = str_password;
-            //repo.Update(data);
-            //repo.SaveChanges();
-            //bln_value = true;
-        }
-        return bln_value;
-    }
-    /// <summary>
-    /// 變更密碼
-    /// </summary>
-    /// <param name="oldPassword">舊密碼</param>
-    /// <param name="newPassword">新密碼</param>
-    /// <returns></returns>
-    public bool ChangePassword(string oldPassword, string newPassword)
-    {
-        bool bln_value = false;
-        //處理帳號密碼加密
-        if (AppService.EncryptionMode)
-        {
-            using (CryptographyService cryp = new CryptographyService())
-            {
-                oldPassword = cryp.SHA256Encode(oldPassword);
-                newPassword = cryp.SHA256Encode(newPassword);
-            }
-        }
-        //檢查舊密碼正確性
-        var data = repo.ReadSingle(m =>
-            m.UserNo == UserService.UserNo &&
-            m.RoleNo == UserService.RoleNo &&
-            m.Password == oldPassword);
-        if (data != null)
-        {
-            //變更為新密碼
-            using (DapperRepository dp = new DapperRepository())
-            {
-                dp.CommandText = "UPDATE Users SET Password = @Password WHERE RoleNo = @RoleNo AND UserNo = @UserNo";
-                dp.ParametersAdd("RoleNo", UserService.RoleNo, true);
-                dp.ParametersAdd("UserNo", UserService.UserNo, false);
-                dp.ParametersAdd("Password", newPassword, false);
-                dp.Execute();
-                string str_message = dp.ErrorMessage;
-            }
-            //data.Password = newPassword;
-            //repo.Update(data);
-            //repo.SaveChanges();
-            bln_value = true;
-        }
-        return bln_value;
-    }
-    /// <summary>
-    /// 快速變更帳號
-    /// </summary>
-    /// <param name="userNo">帳號</param>
-    /// <param name="roleNo">角色</param>
-    /// <returns></returns>
-    public bool QuickLogin(string userNo, string roleNo)
-    {
-        bool bln_value = false;
-        UserService.Logout();
-        var data = repo.ReadSingle(m => m.UserNo == userNo && m.RoleNo == roleNo);
-        if (data != null)
-        {
-            UserService.Login(data.UserNo, data.UserName, data.RoleNo);
-            bln_value = true;
-        }
-        return bln_value;
-    }
-    /// <summary>
-    /// 設定副標題
-    /// </summary>
-    /// <param name="userNo">帳號</param>
-    /// <param name="titleName">副標題</param>
-    public void SetSubHeader(string userNo, string titleName)
-    {
-        string str_value = $"{titleName}";
-        var model = repo.ReadSingle(m => m.UserNo == userNo);
-        if (model != null)
-        {
-            str_value += $"：{userNo} {model.UserName}";
-        }
-        PrgService.SubHeader = str_value;
-    }
-    /// <summary>
-    /// 驗證使用者註冊驗證碼
-    /// </summary>
-    /// <param name="validateCode">驗證碼</param>
-    /// <param name="errorMessage">錯誤訊息</param>
-    /// <returns></returns>
-    public bool ValidateEmail(string validateCode, ref string errorMessage)
-    {
-        if (string.IsNullOrEmpty(validateCode))
-        {
-            errorMessage = "驗證碼空白!!";
-            return false;
-        }
-        var userData = repo.ReadSingle(m => m.ValidateCode == validateCode);
-        //檢查是否合法驗證
-        if (userData == null)
-        {
-            errorMessage = "驗證碼不存在!!";
-            return false;
-        }
-        if (userData.IsValid)
-        {
-            errorMessage = "會員已驗證，不可重覆驗證!!";
-            return false;
-        }
-        //修改驗證狀態
-        userData.IsValid = true;
-
-        // Jacky 1120609 增加
-        userData.ValidateCode = "";     // ValidateCode 清除
-        userData.RoleNo = "User";       // 預設角色為 User
-        
-        repo.Update(userData);
-
-        // Jacky 1120609
-        // 避免額外的驗證機制導致失敗，故先關閉之。(額外的驗證機制：DbEntityValidationException 類別)
-        repo.Context.Configuration.ValidateOnSaveEnabled = false;
-        errorMessage = repo.SaveChanges();
-        // 因為Update 單一model需要先關掉validation，因此重新打開
-        repo.Context.Configuration.ValidateOnSaveEnabled = true;
-
-        //Jacky 1120609
-        return errorMessage == "";
-    }
-
-    //Jacky 1120604
-    /// <summary>
-    /// 會員註冊
-    /// </summary>
-    /// <param name="userNo"></param>
-    /// <param name="password"></param>
-    /// <returns></returns>
-    public bool Retister(string userNo, string password)
-    {
-        bool bln_value = false;
-        UserService.Logout();
-        //處理帳號密碼加密
-        if (AppService.EncryptionMode)
-        {
-            using (CryptographyService cryp = new CryptographyService())
-            { password = cryp.SHA256Encode(password); }
-            if (AppService.DebugMode)
-            {
-                var user = repo.ReadSingle(m => m.UserNo == userNo);
-                if (user != null && string.IsNullOrEmpty(user.Password))
-                {
-                    user.Password = password;
-                    repo.Update(user);
-                    repo.SaveChanges();
-                }
-            }
-        }
-        //檢查登入帳密正確性
-        var data = repo.ReadSingle(m => m.UserNo == userNo && m.Password == password);
-        if (data != null)
-        {
-            UserService.Login(data.UserNo, data.UserName, data.RoleNo);
-            bln_value = true;
-        }
-        return bln_value;
     }
 
     // Jacky 1120609
@@ -529,6 +339,251 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
 
             return bln_valid;
         }
+    }
+
+    /// <summary>
+    /// 重設密碼
+    /// </summary>
+    /// <param name="id">Id</param>
+    public bool ResetPassword(int id)
+    {
+        bool bln_value = false;
+        //檢查舊密碼正確性
+        var data = repo.ReadSingle(m => m.Id == id);
+        if (data != null)
+        {
+            string str_password = data.UserNo;
+            //處理帳號密碼加密
+            if (AppService.EncryptionMode)
+            {
+                using (CryptographyService cryp = new CryptographyService())
+                {
+                    str_password = cryp.SHA256Encode(data.UserNo);
+                }
+            }
+            //變更為新密碼
+            using (DapperRepository dp = new DapperRepository())
+            {
+                dp.CommandText = "UPDATE Users SET Password =  @Password  WHERE Id = @Id";
+                dp.ParametersAdd("Id", id, true);
+                dp.ParametersAdd("Password", str_password, false);
+                dp.Execute();
+                bln_value = true;
+            }
+
+
+            //data.Password = str_password;
+            //repo.Update(data);
+            //repo.SaveChanges();
+            //bln_value = true;
+        }
+        return bln_value;
+    }
+    
+    /// <summary>
+    /// 變更密碼
+    /// </summary>
+    /// <param name="oldPassword">舊密碼</param>
+    /// <param name="newPassword">新密碼</param>
+    /// <returns></returns>
+    public bool ChangePassword(string oldPassword, string newPassword)
+    {
+        bool bln_value = false;
+        //處理帳號密碼加密
+        if (AppService.EncryptionMode)
+        {
+            using (CryptographyService cryp = new CryptographyService())
+            {
+                oldPassword = cryp.SHA256Encode(oldPassword);
+                newPassword = cryp.SHA256Encode(newPassword);
+            }
+        }
+        //檢查舊密碼正確性
+        var data = repo.ReadSingle(m =>
+            m.UserNo == UserService.UserNo &&
+            m.RoleNo == UserService.RoleNo &&
+            m.Password == oldPassword);
+        if (data != null)
+        {
+            //變更為新密碼
+            using (DapperRepository dp = new DapperRepository())
+            {
+                dp.CommandText = "UPDATE Users SET Password = @Password WHERE RoleNo = @RoleNo AND UserNo = @UserNo";
+                dp.ParametersAdd("RoleNo", UserService.RoleNo, true);
+                dp.ParametersAdd("UserNo", UserService.UserNo, false);
+                dp.ParametersAdd("Password", newPassword, false);
+                dp.Execute();
+                string str_message = dp.ErrorMessage;
+            }
+            //data.Password = newPassword;
+            //repo.Update(data);
+            //repo.SaveChanges();
+            bln_value = true;
+        }
+        return bln_value;
+    }
+    
+    /// <summary>
+    /// 快速變更帳號
+    /// </summary>
+    /// <param name="userNo">帳號</param>
+    /// <param name="roleNo">角色</param>
+    /// <returns></returns>
+    public bool QuickLogin(string userNo, string roleNo)
+    {
+        bool bln_value = false;
+        UserService.Logout();
+        var data = repo.ReadSingle(m => m.UserNo == userNo && m.RoleNo == roleNo);
+        if (data != null)
+        {
+            UserService.Login(data.UserNo, data.UserName, data.RoleNo);
+            bln_value = true;
+        }
+        return bln_value;
+    }
+    
+    /// <summary>
+    /// 設定副標題
+    /// </summary>
+    /// <param name="userNo">帳號</param>
+    /// <param name="titleName">副標題</param>
+    public void SetSubHeader(string userNo, string titleName)
+    {
+        string str_value = $"{titleName}";
+        var model = repo.ReadSingle(m => m.UserNo == userNo);
+        if (model != null)
+        {
+            str_value += $"：{userNo} {model.UserName}";
+        }
+        PrgService.SubHeader = str_value;
+    }
+    
+    /// Jacky 1120604
+    /// <summary>
+    /// 會員註冊
+    /// </summary>
+    /// <param name="userNo"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    public bool Retister(string userNo, string password)
+    {
+        bool bln_value = false;
+        UserService.Logout();
+        //處理帳號密碼加密
+        if (AppService.EncryptionMode)
+        {
+            using (CryptographyService cryp = new CryptographyService())
+            { password = cryp.SHA256Encode(password); }
+            if (AppService.DebugMode)
+            {
+                var user = repo.ReadSingle(m => m.UserNo == userNo);
+                if (user != null && string.IsNullOrEmpty(user.Password))
+                {
+                    user.Password = password;
+                    repo.Update(user);
+                    repo.SaveChanges();
+                }
+            }
+        }
+    
+        //檢查登入帳密正確性
+        var data = repo.ReadSingle(m => m.UserNo == userNo && m.Password == password);
+        if (data != null)
+        {
+            UserService.Login(data.UserNo, data.UserName, data.RoleNo);
+            bln_value = true;
+        }
+        return bln_value;
+    }
+
+    /// <summary>
+    /// 驗證使用者註冊驗證碼
+    /// </summary>
+    /// <param name="validateCode">驗證碼</param>
+    /// <param name="errorMessage">錯誤訊息</param>
+    /// <returns></returns>
+    public bool ValidateEmail(string validateCode, ref string errorMessage)
+    {
+        if (string.IsNullOrEmpty(validateCode))
+        {
+            errorMessage = "驗證碼空白!!";
+            return false;
+        }
+
+        var userData = repo.ReadSingle(m => m.ValidateCode == validateCode);
+        //檢查是否合法驗證
+        if (userData == null)
+        {
+            errorMessage = "驗證碼不存在!!";
+            return false;
+        }
+        if (userData.IsValid)
+        {
+            errorMessage = "會員已驗證，不可重覆驗證!!";
+            return false;
+        }
+
+        //修改驗證狀態
+        userData.IsValid = true;
+        // Jacky 1120609 增加
+        userData.ValidateCode = "";     // ValidateCode 清除
+        userData.RoleNo = "User";       // 預設角色為 User
+        repo.Update(userData);
+
+        // Jacky 1120609
+        // 避免額外的驗證機制導致失敗，故先關閉之。(驗證機制：DbEntityValidationException 類別)
+        // 驗證實體失敗時所 SaveChanges() 擲回的例外狀況。命名空間: System.Data.Entity.Validation)
+        repo.Context.Configuration.ValidateOnSaveEnabled = false;
+        errorMessage = repo.SaveChanges();
+        // 因為 Update 單一 model 需要先關掉 validation，因此重新打開
+        repo.Context.Configuration.ValidateOnSaveEnabled = true;
+
+        //Jacky 1120609
+        return errorMessage == "";
+    }
+
+    // Jacky 1120610 增加
+    /// <summary>
+    /// 驗證使用者註冊驗證碼
+    /// </summary>
+    /// <param name="validateCode">驗證碼</param>
+    /// <param name="errorMessage">錯誤訊息</param>
+    /// <returns></returns>
+    public bool ValidateForget(string validateCode, ref string errorMessage)
+    {
+        if (string.IsNullOrEmpty(validateCode))
+        {
+            errorMessage = "驗證碼空白!!";
+            return false;
+        }
+
+        var userData = repo.ReadSingle(m => m.ValidateCode == validateCode);
+        //檢查是否合法驗證
+        if (userData == null)
+        {
+            errorMessage = "驗證碼不存在!!";
+            return false;
+        }
+        if (userData.IsValid)
+        {
+            errorMessage = "密碼已驗證，不可重覆驗證!!";
+            return false;
+        }
+
+        //修改驗證狀態
+        userData.IsValid = true;
+        userData.ValidateCode = "";     // ValidateCode 清除
+        repo.Update(userData);
+
+        // Jacky 1120609
+        // 避免額外的驗證機制導致失敗，故先關閉之。(驗證機制：DbEntityValidationException 類別)
+        // 驗證實體失敗時所 SaveChanges() 擲回的例外狀況。命名空間: System.Data.Entity.Validation)
+        repo.Context.Configuration.ValidateOnSaveEnabled = false;
+        errorMessage = repo.SaveChanges();
+        // 因為 Update 單一 model 需要先關掉 validation，因此重新打開
+        repo.Context.Configuration.ValidateOnSaveEnabled = true;
+
+        return errorMessage == "";
     }
 
 
