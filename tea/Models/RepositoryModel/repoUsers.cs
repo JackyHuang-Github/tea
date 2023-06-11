@@ -564,11 +564,6 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
             errorMessage = "驗證碼不存在!!";
             return false;
         }
-        if (userData.IsValid)
-        {
-            errorMessage = "密碼已驗證，不可重覆驗證!!";
-            return false;
-        }
 
         //修改驗證狀態
         userData.IsValid = true;

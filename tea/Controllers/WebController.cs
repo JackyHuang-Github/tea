@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -66,7 +67,7 @@ namespace tea.Controllers
                     case 0:             
                         // 成功
                         if (!AppService.IsConfig) AppService.Init();
-                        return RedirectToAction("Home", "Web", new { area = "" });
+                        return RedirectToAction("Index", "Home", new { area = "" });
                     case -1:
                         // 帳號或密碼錯誤
                         ModelState.AddModelError("UserNo", "帳號或密碼輸入錯誤！");
@@ -95,7 +96,7 @@ namespace tea.Controllers
         public ActionResult Logout()
         {
             UserService.Logout();
-            return RedirectToAction("Login", "Web", new { area = "" });
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         /// Jacky 1120604
@@ -228,8 +229,8 @@ namespace tea.Controllers
                     ModelState.AddModelError("OldPassword", "密碼輸入錯誤!!");
                     return View(model);
                 }
-                TempData["ErrorMessage"] = "密碼已成功變更!!";
-                return RedirectToAction("Index", "Home", new { area = UserService.RoleNo });
+                TempData["ErrorMessage"] = "密碼已變更成功!!";
+                return RedirectToAction("Home", "Web", new { area = UserService.RoleNo });
             }
         }
 
@@ -272,6 +273,7 @@ namespace tea.Controllers
         public ActionResult ValidateEmailResult()
         {
             ViewBag.MessageText = TempData["MessageText"].ToString();
+            //ViewBag.MessageText = "test";
             return View();
         }
 
@@ -312,6 +314,19 @@ namespace tea.Controllers
                         // 亂數產生一組8位數的新密碼
                         string str_new_password = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8).ToUpper();
                         string str_user_name = userData.UserName;
+
+                        // 給定 ValidateCode                        
+                        userData.ValidateCode = str_ValidateCode;
+                        // 設定新密碼
+                        userData.Password = str_new_password;
+                        users.repo.Update(userData);
+
+                        // 避免額外的驗證機制導致失敗，故先關閉之。(驗證機制：DbEntityValidationException 類別)
+                        // 驗證實體失敗時所 SaveChanges() 擲回的例外狀況。命名空間: System.Data.Entity.Validation)
+                        users.repo.Context.Configuration.ValidateOnSaveEnabled = false;
+                        users.repo.SaveChanges();
+                        // 因為 Update 單一 model 需要先關掉 validation，因此重新打開
+                        users.repo.Context.Configuration.ValidateOnSaveEnabled = true;
 
                         // 寄出電子信箱驗證信
                         sendMail.UserForget(model.ContactEmail, str_ValidateCode, str_user_name, str_new_password);
