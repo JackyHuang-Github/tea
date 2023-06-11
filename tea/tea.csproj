@@ -3080,13 +3080,14 @@
     <Content Include="Views\PartialViews\_PartialShopPage.cshtml" />
     <Content Include="Views\Shop\ProductDetail.cshtml" />
     <Content Include="Views\Web\Register.cshtml" />
-    <Content Include="Views\Web\Registered.cshtml" />
-    <Content Include="Views\Web\Forgeted.cshtml" />
+    <Content Include="Views\Web\RegisterResult.cshtml" />
+    <Content Include="Views\Web\ForgeteResult.cshtml" />
     <Content Include="Views\Web\Forget.cshtml" />
     <Content Include="Views\Web\ValidateEmail.cshtml" />
     <Content Include="Views\Web\ValidateEmailResult.cshtml" />
     <Content Include="Views\Web\ValidateForgetResult.cshtml" />
     <Content Include="Views\Web\ValidateForget.cshtml" />
+    <Content Include="Views\Web\ChangePasswordResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Mis\Data\" />

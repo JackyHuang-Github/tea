@@ -41,7 +41,6 @@ namespace tea.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            UserService.Logout();
             vmLogin model = new vmLogin();
             return View(model);
         }
@@ -54,13 +53,18 @@ namespace tea.Controllers
         [HttpPost]
         public ActionResult Login(vmLogin model)
         {
+            UserService.Logout();
+
             // 1. 沒有通過驗證，返回登入頁繼續輸入
             if (!ModelState.IsValid) return View(model);
             // 2. 判斷登入資料是否正確，不正確時手動引發一個錯誤
             using (z_repoUsers repos = new z_repoUsers())
             {
-                /// Jacky 1120609 回傳值改為數值 (0:成功 -1:帳號或密碼錯誤 -2:帳號尚未驗證成功)
-                //bool bln_value = repos.Login(model.UserNo, model.Password);
+                /// Jacky 1120609 回傳值改為數值 
+                ///  0:成功 
+                /// -1:帳號或密碼錯誤 
+                /// -2:驗證信尚未驗證成功
+                /// -3:帳號尚未生效
                 int result = repos.Login(model.UserNo, model.Password);
                 switch (result)
                 {
@@ -74,18 +78,16 @@ namespace tea.Controllers
                         return View(model);
                     case -2:
                         // 帳號尚未驗證成功
-                        ModelState.AddModelError("UserNo", "帳號尚未驗證成功！");
+                        ModelState.AddModelError("UserNo", "驗證信尚未驗證成功！");
+                        return View(model);
+                    case -3:
+                        // 帳號尚未生效
+                        ModelState.AddModelError("UserNo", "帳號尚未生效！");
                         return View(model);
                     default:
                         ModelState.AddModelError("UserNo", "狀態碼 result 尚未定義！");
                         return View(model);
                 }
-
-                //if (!bln_value)
-                //{
-                //    ModelState.AddModelError("UserNo", "帳號或密碼輸入錯誤!!");
-                //    return View(model);
-                //}
             }
         }
 
@@ -172,8 +174,9 @@ namespace tea.Controllers
                         errorMessage = sendMail.UserRegister(str_ValidateCode);
                         if (errorMessage == "")
                         {
-                            //顯示註冊完成並提示收信資訊
-                            return RedirectToAction("Registered");
+                            // 顯示註冊完成並提示收信資訊
+                            // Jacky 1120611 變更 Action 名稱為 RegisterResult (原為 Registered)
+                            return RedirectToAction("RegisterResult");
                         }
                         else
                         {
@@ -185,17 +188,18 @@ namespace tea.Controllers
             }
         }
 
+        // Jacky 1120611 變更 Action 名稱為 RegisterResult (原為 Registered)
         /// <summary>
         /// 顯示會員註冊結果
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Registered()
+        public ActionResult RegisterResult()
         {
             ViewBag.MessageText = "親愛的會員您好，您的註冊已完成，";
             ViewBag.MessageText += "請您記得到您的電子信箱中執行電子信箱的驗證功能，";
-            ViewBag.MessageText += "以完成正式會員的資格!!";
+            ViewBag.MessageText += "以完成正式會員的資格！";
             return View();
         }
 
@@ -226,12 +230,22 @@ namespace tea.Controllers
                 bool bln_value = repos.ChangePassword(model.OldPassword, model.NewPassword);
                 if (!bln_value)
                 {
-                    ModelState.AddModelError("OldPassword", "密碼輸入錯誤!!");
+                    ModelState.AddModelError("OldPassword", "密碼輸入錯誤！");
                     return View(model);
                 }
-                TempData["ErrorMessage"] = "密碼已變更成功!!";
-                return RedirectToAction("Home", "Web", new { area = UserService.RoleNo });
+                TempData["MessageText"] = "密碼已變更成功！";
+                return RedirectToAction("ChangePasswordResult");
             }
+        }
+
+        /// <summary>
+        /// 顯示變更密碼結果
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ChangePasswordResult()
+        {
+            ViewBag.MessageText = TempData["MessageText"].ToString();
+            return View();
         }
 
         /// <summary>
@@ -257,7 +271,7 @@ namespace tea.Controllers
                         // Jacky 1120610 改為 enLogType.EmailValidate (原為 enLogType.EmailSend)
                         logs.EventLogCount(enLogType.EmailSend, userData.UserNo, id);
                     }
-                    TempData["MessageText"] = "會員電子郵件已驗證成功，您可以進入登入頁登入系統!!";
+                    TempData["MessageText"] = "會員電子郵件已驗證成功，您可以進入登入頁登入系統！";
                 }
              
                 // Jacky 1120608
@@ -273,7 +287,6 @@ namespace tea.Controllers
         public ActionResult ValidateEmailResult()
         {
             ViewBag.MessageText = TempData["MessageText"].ToString();
-            //ViewBag.MessageText = "test";
             return View();
         }
 
@@ -302,7 +315,7 @@ namespace tea.Controllers
                 var userData = users.repo.ReadSingle(m => m.ContactEmail == model.ContactEmail);
                 if (userData == null)
                 {
-                    ModelState.AddModelError("ContactEmail", "電子信箱不存在!!");
+                    ModelState.AddModelError("ContactEmail", "電子信箱不存在！");
                     return View(model);
                 }
                 else
@@ -335,16 +348,18 @@ namespace tea.Controllers
             }
 
             //提示收信資訊
-            return RedirectToAction("Forgeted");
+            // Jacky 1120611 變更 Action 名稱為 ForgetResult (原為 Forgeted)
+            return RedirectToAction("ForgeteResult");
         }
 
+        // Jacky 1120611 變更 Action 名稱為 ForgetResult (原為 Forgeted)
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Forgeted()
+        public ActionResult ForgeteResult()
         {
             ViewBag.MessageText = "您的忘記密碼需求已核准，";
             ViewBag.MessageText += "請您到您的電子信箱中執行忘記密碼重寄的驗證功能，";
-            ViewBag.MessageText += "以完成密碼重設的目的!!";
+            ViewBag.MessageText += "以完成密碼重設的目的！";
             return View();
         }
 
@@ -372,7 +387,7 @@ namespace tea.Controllers
                     {
                         logs.EventLogCount(enLogType.ForgetValidate, userData.UserNo, id);
                     }
-                    TempData["MessageText"] = "會員密碼重寄已驗證成功，您可以進入登入頁登入系統!!";
+                    TempData["MessageText"] = "會員密碼重寄已驗證成功，您可以進入登入頁登入系統！";
                 }
 
                 // 顯示訊息畫面

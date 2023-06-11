@@ -239,7 +239,11 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
     /// <param name="userNo">帳號</param>
     /// <param name="password">密碼</param>
     /// <returns></returns>
-    /// Jacky 1120609 回傳值改為數值 (0:成功 -1:帳號或密碼錯誤 -2:帳號尚未驗證成功)
+    /// Jacky 1120609 回傳值改為數值 
+    ///  0:成功 
+    /// -1:帳號或密碼錯誤 
+    /// -2:驗證信尚未驗證成功
+    /// -3:帳號尚未生效
     public int Login(string userNo, string password)
     {
         int result = 0;             // 成功
@@ -264,20 +268,25 @@ LEFT OUTER JOIN Departments ON Users.DeptNo = Departments.DeptNo
         }
 
         //檢查登入帳密正確性
-        var data = repo.ReadSingle(m => m.UserNo == userNo && m.Password == password);
-        if (data != null)
+        var userData = repo.ReadSingle(m => m.UserNo == userNo && m.Password == password);
+        if (userData != null)
         {
-            if (data.IsValid)
+            if (userData.ValidateCode != "")
             {
-                UserService.Login(data.UserNo, data.UserName, data.RoleNo);
-                HttpContext.Current.Session["UserNo"] = data.UserNo;
-                HttpContext.Current.Session["UserName"] = data.UserName;
-                HttpContext.Current.Session["RoleNo"] = data.RoleNo;
-                result = 0;         // 成功
+                result = -2;        // 驗證信尚未驗證成功
+            }
+            else if (!userData.IsValid)
+            {
+                result = -3;        // 帳號尚未生效
+
             }
             else
             {
-                result = -2;        // 帳號尚未驗證成功
+                UserService.Login(userData.UserNo, userData.UserName, userData.RoleNo);
+                HttpContext.Current.Session["UserNo"] = userData.UserNo;
+                HttpContext.Current.Session["UserName"] = userData.UserName;
+                HttpContext.Current.Session["RoleNo"] = userData.RoleNo;
+                result = 0;         // 成功
             }
         }
         else
