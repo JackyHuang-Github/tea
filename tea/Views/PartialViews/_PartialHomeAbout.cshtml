@@ -1,7 +1,6 @@
-﻿<section id="about-us" class="about-us">
-    <div class="container" data-aos="fade-up">
-        @* Jacky 1120611 設定 style="padding-bottom: 0;" *@
-        <div class="section-title" style="padding-bottom: 0;">
+﻿<section id="about-us" class="about-us py-3">
+    <div class="container-fluid" data-aos="fade-up">
+        <div class="section-title pb-1">
             @*<h2>公司簡介</h2>*@
             @* Jacky 1120528 *@
             <h2>品牌核心</h2>
@@ -35,19 +34,26 @@
                         </div>
                     </div>-->
 
-                    <div class="row content">
-                        <div class="" data-aos="fade-up">
-                            <p>
-                                <h3 class="text-center">@Html.Raw(compData.AboutusText)</h3>
-                            </p>
-                            <div>
-                                <img src="@Url.Content("~/Images/About/About001.jpg")" alt="" />
-                            </div>
-
-                        </div>
+            <div class="row content">
+                <div class="" data-aos="fade-up">
+                    <div class="col">
+                        <p>
+                            <h3 class="text-center">@Html.Raw(compData.AboutusText)</h3>
+                        </p>
                     </div>
-                }
-            }
+                    <div class="col d-flex justify-content-center">
+                        <img src="@Url.Content("~/Images/About/About002.jpg")" class="img-fluid img-thumbnail rounded" alt="" />
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <img src="@Url.Content("~/Images/About/About001.jpg")" class="img-fluid img-thumbnail rounded" alt="" />
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <img src="@Url.Content("~/Images/About/About003.jpg")" class="img-fluid img-thumbnail rounded" alt="" />
+                    </div>
+                </div>
+            </div>
         }
-    </div>
+    }
+        }
+        </div>
 </section>

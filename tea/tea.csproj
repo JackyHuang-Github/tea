@@ -883,6 +883,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\About\About001.jpg" />
+    <Content Include="Images\About\About002.jpg" />
+    <Content Include="Images\About\About003.jpg" />
     <Content Include="Images\App\AppIcon.ico" />
     <Content Include="Images\App\apple-touch-icon.png" />
     <Content Include="Images\App\AppLogo.png" />
