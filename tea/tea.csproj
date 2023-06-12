@@ -800,8 +800,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppIcon.ico" />
+    <Content Include="App_Data\Db\SQLs\CodeDatas_CRUD.sql" />
     <Content Include="App_Data\Db\SQLs\create_db_tea.sql" />
     <Content Include="App_Data\Db\SQLs\create_db_web111b_16_tea.sql" />
+    <Content Include="App_Data\Db\SQLs\Photos_CRUD.sql" />
+    <Content Include="App_Data\Db\SQLs\Users_CRUD.sql" />
     <Content Include="bin\ECPay.Payment.Integration.dll" />
     <Content Include="Content\all.css" />
     <Content Include="Content\all.min.css" />
@@ -890,10 +893,14 @@
     <Content Include="Images\App\AppLogo.png" />
     <Content Include="Images\App\favicon.png" />
     <Content Include="Images\App\ShopLogo.png" />
+    <Content Include="Images\Carousel\Carousel10.jpg" />
+    <Content Include="Images\Carousel\Carousel11.JPG" />
     <Content Include="Images\Carousel\Carousel4.jpg" />
     <Content Include="Images\Carousel\Carousel5.jpg" />
     <Content Include="Images\Carousel\Carousel6.jpg" />
     <Content Include="Images\Carousel\Carousel7.jpg" />
+    <Content Include="Images\Carousel\Carousel8.JPG" />
+    <Content Include="Images\Carousel\Carousel9.jpg" />
     <Content Include="Images\Category\Cloth\Coat.jpg" />
     <Content Include="Images\Category\Cloth\Coat\Coat01.jpg" />
     <Content Include="Images\Category\Cloth\Coat\Coat02.jpg" />
