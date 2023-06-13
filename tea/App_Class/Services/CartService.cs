@@ -62,6 +62,7 @@ public static class CartService
         if (!string.IsNullOrEmpty(LotNo))
         {
             int int_qty = 0;
+            int int_price = 0;
             using (z_repoCarts carts = new z_repoCarts())
             {
                 var datas = carts.repo.ReadAll(m => m.LotNo == LotNo);
@@ -70,7 +71,9 @@ public static class CartService
                     foreach (var item in datas)
                     {
                         int_qty = item.OrderQty;
-                        AddCart(item.ProdNo, item.ProdSpec, int_qty);
+                        // Jacky 1120614 AddCart 全部改為傳入 4 個參數，因此取消傳入 2 個及 3 個傳入參數函式
+                        // AddCart(item.ProdNo, item.ProdSpec, int_qty);
+                        AddCart(item.ProdNo, item.ProdSpec, int_qty, int_price);
                         carts.repo.Delete(item);
                     }
                     carts.repo.SaveChanges();
@@ -79,36 +82,55 @@ public static class CartService
             NewLotNo();
         }
     }
+
+    /// Jacky 1120614 AddCart 全部改為傳入 4 個參數，因此取消傳入 2 個及 3 個傳入參數函式
     /// <summary>
     /// 加入購物車
     /// </summary>
     /// <param name="productNo">商品編號</param>
-    public static void AddCart(string productNo)
-    {
-        AddCart(productNo, "", 1);
-    }
+    //public static void AddCart(string productNo)
+    //{
+    //    AddCart(productNo, "", 1);
+    //}
 
-    /// <summary>
-    /// 加入購物車
-    /// </summary>
-    /// <param name="productNo">商品編號</param>
-    /// <param name="buyQty">數量</param>
-    public static void AddCart(string productNo, int buyQty)
-    {
-        AddCart(productNo, "", buyQty);
-    }
+    /// Jacky 1120614 AddCart 全部改為傳入 4 個參數，因此取消傳入 2 個及 3 個傳入參數函式
+    ///// <summary>
+    ///// 加入購物車
+    ///// </summary>
+    ///// <param name="productNo">商品編號</param>
+    ///// <param name="buyQty">數量</param>
+    //public static void AddCart(string productNo, int buyQty)
+    //{
+    //    AddCart(productNo, "", buyQty);
+    //}
 
+    ///// <summary>
+    ///// 加入購物車
+    ///// </summary>
+    ///// <param name="productNo">商品編號</param>
+    ///// <param name="prod_Spec">商品規格</param>
+    ///// <param name="buyQty">數量</param>
+    //public static void AddCart(string productNo, string prod_Spec, int buyQty)
+    //{
+    //    using (z_repoCarts carts = new z_repoCarts())
+    //    {
+    //        carts.AddCart(productNo, prod_Spec, buyQty);
+    //    }
+    //}
+
+    /// Jacky 1120614 增加傳入第四個參數 price
     /// <summary>
     /// 加入購物車
     /// </summary>
     /// <param name="productNo">商品編號</param>
     /// <param name="prod_Spec">商品規格</param>
     /// <param name="buyQty">數量</param>
-    public static void AddCart(string productNo, string prod_Spec, int buyQty)
+    /// <param name="buyPrice">單價</param>
+    public static void AddCart(string productNo, string prod_Spec, int buyQty, int buyPrice)
     {
         using (z_repoCarts carts = new z_repoCarts())
         {
-            carts.AddCart(productNo, prod_Spec, buyQty);
+            carts.AddCart(productNo, prod_Spec, buyQty, buyPrice);
         }
     }
 

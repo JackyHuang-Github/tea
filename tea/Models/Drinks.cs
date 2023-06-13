@@ -16,7 +16,7 @@ namespace tea.Models
     {
         public int Id { get; set; }
         public string CodeNo { get; set; }
-        public string FileName { get; set; }
+        public string ProductNo { get; set; }
         public string ProductName { get; set; }
         public int Price { get; set; }
         public System.DateTime SaleDate { get; set; }

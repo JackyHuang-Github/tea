@@ -804,6 +804,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppIcon.ico" />
+    <Content Include="App_Data\Db\DbFiles\web111b_16_tea.mdf" />
+    <Content Include="App_Data\Db\DbFiles\web111b_16_tea_log.ldf">
+      <DependentUpon>web111b_16_tea.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Data\Db\SQLs\CodeDatas_CRUD.sql" />
     <Content Include="App_Data\Db\SQLs\create_db_tea.sql" />
     <Content Include="App_Data\Db\SQLs\create_db_web111b_16_tea.sql" />
@@ -3104,7 +3108,7 @@
     <Content Include="Views\Web\ValidateForgetResult.cshtml" />
     <Content Include="Views\Web\ValidateForget.cshtml" />
     <Content Include="Views\Web\ChangePasswordResult.cshtml" />
-    <Content Include="Views\Shop\Detail.cshtml" />
+    <Content Include="Views\Shop\ShopDetail.cshtml" />
     <Content Include="Views\Shop\Detail_backup.cshtml" />
   </ItemGroup>
   <ItemGroup>

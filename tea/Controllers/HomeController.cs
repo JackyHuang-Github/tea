@@ -58,7 +58,7 @@ namespace tea.Controllers
         {
             //ViewBag.SectionName = "商品分類";
             //Jacky 1120530
-            ViewBag.SectionName = "飲品分類";
+            ViewBag.SectionName = "飲品介紹";
             return View();
         }
 

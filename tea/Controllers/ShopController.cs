@@ -9,7 +9,8 @@ namespace tea.Controllers
     /// <summary>
     /// ShopController
     /// </summary>
-    public class ShopController : BaseController
+    //public class ShopController : BaseController
+    public class ShopController : Controller
     {
         public ActionResult Index(int page = 1, int pageSize = 12)
         {
@@ -25,6 +26,7 @@ namespace tea.Controllers
                 }
             }
         }
+
         /// <summary>
         /// 商品排序
         /// </summary>
@@ -35,6 +37,7 @@ namespace tea.Controllers
             ShopService.SortNo = id;
             return RedirectToAction("Index", "Shop", new { area = "" });
         }
+
         /// <summary>
         /// 商品分類
         /// </summary>
@@ -46,6 +49,7 @@ namespace tea.Controllers
             ShopService.SearchText = "";
             return RedirectToAction("Index", "Shop", new { area = "" });
         }
+
         /// <summary>
         /// 商品搜尋
         /// </summary>
@@ -59,6 +63,7 @@ namespace tea.Controllers
             ShopService.SearchText = str_text;
             return RedirectToAction("Index", "Shop", new { area = "" });
         }
+
         /// <summary>
         /// 價格區間
         /// </summary>
@@ -85,14 +90,16 @@ namespace tea.Controllers
         /// </summary>
         /// <param name="id">商品編號</param>
         /// <returns></returns>
-        public ActionResult Detail(string id)
+        [HttpGet]
+        public ActionResult ShopDetail(string id)
         {
-            using (z_repoDrinks prod = new z_repoDrinks())
+            using (z_repoDrinks drinks = new z_repoDrinks())
             {
-                var model = prod.repo.ReadSingle(m => m.CodeNo == id);
+                var model = drinks.repo.ReadSingle(m => m.ProductNo == id);
                 return View(model);
             }
         }
+
         /// <summary>
         /// 加入購物車
         /// </summary>
@@ -101,13 +108,20 @@ namespace tea.Controllers
         [HttpPost]
         public ActionResult AddToCart(FormCollection collection)
         {
-            string str_prod_no = collection["ProdNo"];
+            //Jacky 1120614 增加 Price
+            string str_prod_no = collection["ProductNo"];
             string str_qty = collection["Quantity"];
+            string str_price = collection["Price"];
             int int_qty = 1;
             int.TryParse(str_qty, out int_qty);
-            CartService.AddCart(str_prod_no, int_qty);
+            int int_price = 1;
+            int.TryParse(str_price, out int_price);
+            string str_prod_Spec = "";
+            //Jacky 1120614 增加傳入第四個參數 price
+            CartService.AddCart(str_prod_no, str_prod_Spec, int_qty, int_price);
             return RedirectToAction("Cart", "Shop", new { area = "" });
         }
+
         /// <summary>
         /// 更新購物車
         /// </summary>
@@ -126,6 +140,7 @@ namespace tea.Controllers
             }
             return RedirectToAction("Cart", "Shop", new { area = "" });
         }
+
         /// <summary>
         /// 刪除購物車
         /// </summary>
@@ -136,6 +151,7 @@ namespace tea.Controllers
             CartService.DeleteCart(id);
             return RedirectToAction("Cart", "Shop", new { area = "" });
         }
+
         /// <summary>
         /// 購物車
         /// </summary>
@@ -153,6 +169,7 @@ namespace tea.Controllers
                 return View(data2);
             }
         }
+
         /// <summary>
         /// 結帳付款
         /// </summary>
@@ -185,6 +202,7 @@ namespace tea.Controllers
                 }
             }
         }
+
         /// <summary>
         /// 結帳付款成訂單
         /// </summary>

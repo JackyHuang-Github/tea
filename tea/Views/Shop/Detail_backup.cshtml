@@ -54,9 +54,10 @@
                     <ul>
                         <li><h3><strong>價格</strong>：@Model.Price</h3></li>
                         <li><h3><strong>數量</strong>：</h3></li>
+                        @* Jacky 1120614 *@
                         @Html.ActionLink("加入購物車", "AddToCart", "Shop", new { area = "" }, new { @class = "btn btn-danger pr-5" })
-                        @Html.ActionLink("繼續購物", "Index", "Shop", new { area = "" }, new { @class = "btn btn-danger pr-5" })
-                        @Html.ActionLink("結帳付款", "Index", "Home", new { area = "" }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("繼續購物", "Photo", "Home", new { area = "" }, new { @class = "btn btn-danger pr-5" })
+                        @Html.ActionLink("結帳付款", "Payment", "Shop", new { area = "" }, new { @class = "btn btn-danger" })
                     </ul>
                 </div>
                 <div class="portfolio-description">

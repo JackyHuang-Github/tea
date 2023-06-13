@@ -51,7 +51,7 @@ public class z_repoDrinks : BaseClass
     private string GetSQLSelect()
     {
         string str_query = @"
-SELECT Id,CodeNo,FileName,ProductName,Price,SaleDate,DetailText,Remark 
+SELECT Id,CodeNo,[FileName],ProductName,Price,SaleDate,DetailText,Remark 
 FROM Drinks 
 ";
         return str_query;

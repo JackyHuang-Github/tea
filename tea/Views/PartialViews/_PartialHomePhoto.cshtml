@@ -65,7 +65,8 @@
         <i class="fas fa-search-plus"></i></a>*@
 
                                 @*Jacky 1120613*@
-                                <a href="@Url.Action("Detail" , "Shop" , new { area = "" , id = item.FolderName })" class="details-link" title="更多資訊">
+                                @*<a href="@Url.Action("PhotoDetail" , "Home" , new { area = "" , id = @item.FolderName})" class="details-link" title="更多資訊">*@
+                                <a href="@Url.Action("ShopDetail" , "Shop" , new { area = "" , id = @item.FolderName })" class="details-link" title="更多資訊">
                                     <i class="fas fa-info-circle"></i>
                                 </a>
                             </div>

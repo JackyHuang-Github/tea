@@ -119,13 +119,17 @@ SELECT Id,LotNo,MemberNo,VendorNo,CategoryNo,CategoryName,ProdNo
         return repo.ReadAll(m => m.MemberNo == UserService.UserNo).ToList();
     }
 
-    public void AddCart(string productNo, string prod_Spec, int buyQty)
+    //Jacky 1120614 增加傳入第四個參數 price
+    public void AddCart(string productNo, string prod_Spec, int buyQty, int buyPrice)
     {
         using (z_repoProducts prod = new z_repoProducts())
         {
             using (z_repoCategorys cate = new z_repoCategorys())
             {
-                int int_price = prod.GetSalePrice(productNo);
+                // Jacky 改由參數傳入 price
+                //int int_price = prod.GetSalePrice(productNo);
+                int int_price = buyPrice;
+                
                 int int_amount = (buyQty * int_price);
                 var datas = repo.ReadSingle(m =>
                   m.LotNo == CartService.LotNo &&

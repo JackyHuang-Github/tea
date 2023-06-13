@@ -1,0 +1,70 @@
+﻿@model tea.Models.Drinks
+
+@{
+    //Jacky 1120613
+    ViewBag.Title = "ShopDetail";
+    ViewBag.SectionName = "飲品介紹";   // for breadcrumbs use (in _LayoutHome.cshtml)
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+@* Jacky 1120613 整個改寫 *@
+
+@using (Html.BeginForm("AddToCart", "Shop", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ProductNo)
+
+    <!-- ======= Portfolio Details Section ======= -->
+    <section id="portfolio-details" class="portfolio-details">
+        <div class="container" data-aos="fade-up">
+            <div class="row gy-4">
+                <div class="col-lg-5 d-flex flex-column justify-content-center align-items-center">
+                    @*<div class="swiper-slide">*@
+                    <div class="img-fluid">
+                        <img src="@Url.Content("~/Images/Photo/" + Model.CodeNo + "/" + Model.ProductNo + ".jpg")" alt="@Model.ProductName">
+                    </div>
+                </div>
+                <div class="col-lg-6 pt-5">
+                    <div class="portfolio-info">
+                        <div class="text-center">
+                            <h3>@Model.ProductName</h3>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="text-black">
+                                            <span>單價：<strong class="text-primary">&nbsp;@Model.Price</strong></span>
+                                            @* Jacky 增加隱藏的 Price 欄位 *@
+                                            <input type="hidden" id="Price" name="Price" value="@Model.Price" />
+                                        </h5>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>
+                                            <span>數量：&nbsp;<strong class="text-primary"></strong></span>
+                                        </h5>
+                                        <div class="form-outline">
+                                            <input type="number" id="Quantity" name="Quantity" class="form-control" value="1" max="100" min="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <p>
+                                <input type="submit" value="加入購物車" class="buy-now btn btn-danger" />
+                                @Html.ActionLink("繼續購物", "Photo", "Home", new { area = "" }, new { @class = "btn btn-outline-danger" })
+                                @Html.ActionLink("結帳付款", "Payment", "Shop", new { area = "" }, new { @class = "btn btn-danger" })
+                            </p>
+                        </ul>
+                    </div>
+                    <div class="portfolio-description">
+                        <h6>@Html.Raw(Model.DetailText)</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- End Portfolio Details Section -->
+}
