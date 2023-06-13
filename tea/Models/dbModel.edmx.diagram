@@ -66,6 +66,7 @@
         <EntityTypeShape EntityType="nicedemoModel.WorkflowRoutes" Width="1.5" PointX="22.75" PointY="0.75" />
         <EntityTypeShape EntityType="nicedemoModel.FormDetail" Width="1.5" PointX="11.375" PointY="22.75" />
         <EntityTypeShape EntityType="nicedemoModel.FormMaster" Width="1.5" PointX="17.375" PointY="22.75" />
+        <EntityTypeShape EntityType="nicedemoModel.Drinks" Width="1.5" PointX="23.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

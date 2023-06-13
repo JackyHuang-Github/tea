@@ -71,6 +71,8 @@ namespace tea.Controllers
                     case 0:             
                         // 成功
                         if (!AppService.IsConfig) AppService.Init();
+                        //登入時將現有遊客的購物車加入客戶的購物車
+                        CartService.LoginCart();
                         return RedirectToAction("Index", "Home", new { area = "" });
                     case -1:
                         // 帳號或密碼錯誤

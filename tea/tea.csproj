@@ -431,6 +431,9 @@
     <Compile Include="Models\Departments.cs">
       <DependentUpon>dbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Drinks.cs">
+      <DependentUpon>dbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Employees.cs">
       <DependentUpon>dbModel.tt</DependentUpon>
     </Compile>
@@ -592,6 +595,7 @@
     <Compile Include="Models\RepositoryModel\repoClients.cs" />
     <Compile Include="Models\RepositoryModel\repoCloseDates.cs" />
     <Compile Include="Models\RepositoryModel\repoCodeBases.cs" />
+    <Compile Include="Models\RepositoryModel\repoDrinks.cs" />
     <Compile Include="Models\RepositoryModel\repoCodeDatas.cs" />
     <Compile Include="Models\RepositoryModel\repoCompanys.cs" />
     <Compile Include="Models\RepositoryModel\repoDepartments.cs" />
@@ -803,6 +807,8 @@
     <Content Include="App_Data\Db\SQLs\CodeDatas_CRUD.sql" />
     <Content Include="App_Data\Db\SQLs\create_db_tea.sql" />
     <Content Include="App_Data\Db\SQLs\create_db_web111b_16_tea.sql" />
+    <Content Include="App_Data\Db\SQLs\export_Photos.sql" />
+    <Content Include="App_Data\Db\SQLs\import_Drinks.sql" />
     <Content Include="App_Data\Db\SQLs\Photos_CRUD.sql" />
     <Content Include="App_Data\Db\SQLs\Users_CRUD.sql" />
     <Content Include="bin\ECPay.Payment.Integration.dll" />
@@ -3082,7 +3088,7 @@
     <Content Include="Views\PartialViews\_PartialHomeClient.cshtml" />
     <Content Include="Views\Shared\_LayoutShop.cshtml" />
     <Content Include="Views\Shop\Index.cshtml" />
-    <Content Include="Views\Shop\Detail.cshtml" />
+    <Content Include="Views\Shop\xxx_original_Detail.cshtml" />
     <Content Include="Views\Shop\Cart.cshtml" />
     <Content Include="Views\Shop\Payment.cshtml" />
     <Content Include="Views\Shop\PaymentReturnt.cshtml" />
@@ -3098,6 +3104,8 @@
     <Content Include="Views\Web\ValidateForgetResult.cshtml" />
     <Content Include="Views\Web\ValidateForget.cshtml" />
     <Content Include="Views\Web\ChangePasswordResult.cshtml" />
+    <Content Include="Views\Shop\Detail.cshtml" />
+    <Content Include="Views\Shop\Detail_backup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Mis\Data\" />

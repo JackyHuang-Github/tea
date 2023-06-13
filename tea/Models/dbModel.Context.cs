@@ -86,5 +86,6 @@ namespace tea.Models
         public virtual DbSet<WorkflowRoutes> WorkflowRoutes { get; set; }
         public virtual DbSet<FormDetail> FormDetail { get; set; }
         public virtual DbSet<FormMaster> FormMaster { get; set; }
+        public virtual DbSet<Drinks> Drinks { get; set; }
     }
 }

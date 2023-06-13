@@ -78,6 +78,8 @@ namespace tea.Controllers
             ShopService.PriceHigh = int_high;
             return RedirectToAction("Index", "Shop", new { area = "" });
         }
+
+        //Jacky 1120613
         /// <summary>
         /// 商品明細
         /// </summary>
@@ -85,9 +87,9 @@ namespace tea.Controllers
         /// <returns></returns>
         public ActionResult Detail(string id)
         {
-            using (z_repoProducts prod = new z_repoProducts())
+            using (z_repoDrinks prod = new z_repoDrinks())
             {
-                var model = prod.repo.ReadSingle(m => m.ProdNo == id);
+                var model = prod.repo.ReadSingle(m => m.CodeNo == id);
                 return View(model);
             }
         }
