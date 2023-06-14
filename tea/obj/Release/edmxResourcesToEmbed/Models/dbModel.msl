@@ -979,5 +979,19 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Drinks">
+      <EntityTypeMapping TypeName="nicedemoModel.Drinks">
+        <MappingFragment StoreEntitySet="Drinks">
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="DetailText" ColumnName="DetailText" />
+          <ScalarProperty Name="SaleDate" ColumnName="SaleDate" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductNo" ColumnName="ProductNo" />
+          <ScalarProperty Name="CodeNo" ColumnName="CodeNo" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

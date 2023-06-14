@@ -10,9 +10,9 @@
 }
 
 <!-- ======= Contact Section ======= -->
-<section id="contact" class="contact">
-    <div class="container">
-        <div class="section-title">
+<section id="contact" class="contact py-3">
+    <div class="container-fluid" data-aos="fade-up">
+        <div class="section-title pb-1">
             <h2>連絡我們</h2>
         </div>
 
@@ -54,32 +54,32 @@
                     <div class="form-horizontal mt-2">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="row form-group mt-1">
-                            @Html.LabelFor(model => model.ContactorName, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
+                            @Html.LabelFor(model => model.ContactorName, htmlAttributes: new { @class = "control-label col-md-1" })
+                            <div class=" col-md-11">
                                 @Html.EditorFor(model => model.ContactorName, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.ContactorName, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="row form-group mt-1">
-                            @Html.LabelFor(model => model.ContactorEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
+                            @Html.LabelFor(model => model.ContactorEmail, htmlAttributes: new { @class = "control-label col-md-1" })
+                            <div class=" col-md-11">
                                 @Html.EditorFor(model => model.ContactorEmail, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.ContactorEmail, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="row form-group mt-1">
-                            @Html.LabelFor(model => model.ContactorSubject, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
+                            @Html.LabelFor(model => model.ContactorSubject, htmlAttributes: new { @class = "control-label col-md-1" })
+                            <div class=" col-md-11">
                                 @Html.EditorFor(model => model.ContactorSubject, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.ContactorSubject, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="row form-group mt-1">
-                            @Html.LabelFor(model => model.ContactorMessage, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
+                            @Html.LabelFor(model => model.ContactorMessage, htmlAttributes: new { @class = "control-label col-md-1" })
+                            <div class=" col-md-11">
                                 @Html.TextAreaFor(model => model.ContactorMessage, new { @class = "form-control", @rows = 10 })
                                 @Html.ValidationMessageFor(model => model.ContactorMessage, "", new { @class = "text-danger" })
                                 <h5 class="text-danger mt-2">註：若要上傳圖片，為避免圖片無法顯示，可先上傳到 <a href="https://imgur.com/" target="_blank" alt="Imgur">Imgur 網站</a>，再將連結填入即可!!</h5>
@@ -87,7 +87,7 @@
                         </div>
                         <hr />
                         <div class="row form-group">
-                            <div class="col-md-12">
+                            <div class="col-md-12 text-center">
                                 <input type="submit" value="送出訊息" class="btn btn-primary" />
                             </div>
                         </div>

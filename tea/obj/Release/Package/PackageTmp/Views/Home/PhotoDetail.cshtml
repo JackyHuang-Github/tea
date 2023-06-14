@@ -9,45 +9,60 @@
 <section id="portfolio-details" class="portfolio-details">
     <div class="container" data-aos="fade-up">
         <div class="row gy-4">
-            <div class="col-lg-6">
-                <div class="portfolio-details-slider swiper">
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-wrapper align-items-center">
-                        @{
-                            using (var fileService = new FileService())
-                            {
-                                string str_file = "";
-                                string str_folder = string.Format("~/Images/Photo/{0}/{1}", Model.CodeNo, Model.FolderName);
-                                var fileList = fileService.GetFileInfoList(str_folder);
-                                if (fileList != null && fileList.Count > 0)
-                                {
-                                    foreach (var item in fileList)
-                                    {
-                                        str_file = string.Format("{0}/{1}", str_folder, item.Name);
+            <div class="col-lg-5 d-flex flex-column justify-content-center align-items-center">
+                @*<div class="swiper-slide">*@
+                <div class="img-fluid">
+                    <img src="@Url.Content("~/Images/Photo/" + Model.CodeNo + "/" + Model.FolderName + ".jpg")" alt="@Model.PhotoName">
+                </div>
 
-                                        <div class="swiper-slide">
-                                            <img src="@Url.Content(str_file)" alt="@item.Name">
-                                        </div>
+                @*<div class="portfolio-details-slider swiper">
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-wrapper align-items-center">
+                            @{
+                                using (var fileService = new FileService())
+                                {
+                                    string str_file = "";
+
+                                    //string str_folder = string.Format("~/Images/Photo/{0}/{1}", Model.CodeNo, Model.FolderName);
+                                    //Jacky 1120612
+                                    string str_folder = string.Format("~/Images/Photo/{0}", Model.CodeNo);
+
+                                    var fileList = fileService.GetFileInfoList(str_folder);
+                                    if (fileList != null && fileList.Count > 0)
+                                    {
+                                        foreach (var item in fileList)
+                                        {
+                                            str_file = string.Format("{0}/{1}", str_folder, item.Name);
+
+                                            <div class="swiper-slide">
+                                                <img src="@Url.Content(str_file)" alt="@item.Name">
+                                            </div>
+                                        }
                                     }
                                 }
                             }
-                        }
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>*@
+
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 pt-5">
                 <div class="portfolio-info">
-                    <h3>@Model.PhotoName</h3>
+                    <div class="text-center">
+                        <h3>@Model.PhotoName</h3>
+                    </div>
                     <ul>
-                        <li><strong>分類名稱</strong>: @Model.CodeName</li>
-                        <li><strong>價格區間</strong>: @Model.PriceName</li>
-                        <li><strong>上架日期</strong>: @Model.SaleDate.ToString("yyyy/MM/dd")</li>
+                        <li><h3><strong>價格</strong>：@Model.PriceName</h3></li>
+                        <li><h3><strong>數量</strong>：</h3></li>
+                        @* Jacky 1120614 *@
+                        @Html.ActionLink("加入購物車", "AddToCart", "Shop", new { area = "" }, new { @class = "btn btn-danger pr-5" })
+                        @Html.ActionLink("繼續購物", "Photo", "Home", new { area = "" }, new { @class = "btn btn-danger pr-5" })
+                        @Html.ActionLink("結帳付款", "Payment", "Shop", new { area = "" }, new { @class = "btn btn-danger" })
                     </ul>
                 </div>
                 <div class="portfolio-description">
-                    <h2>商品 @Model.PhotoName 的簡介</h2>
-                    @Html.Raw(Model.DetailText)
+                    @*<h3>簡介</h3>*@
+                    <h6>@Html.Raw(Model.DetailText)</h6>
                 </div>
             </div>
         </div>

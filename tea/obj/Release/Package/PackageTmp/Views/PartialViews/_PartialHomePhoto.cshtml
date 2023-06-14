@@ -16,11 +16,12 @@
                 .OrderBy(m => m.CodeNo).ToList();
             model.PhotoList = photos.GetDapperDataList("");
 
-            //Jacky 1120530 增加 pt-1
-            <section id="portfolio" class="portfolio pt-3">
+            // Jacky 1120530 增加 py-3
+            // Jacky 1120612 增加 data-aos="fade-up"
+            <section id="portfolio" class="portfolio py-3" data-aos="fade-up">
                 <div class="container">
-                    @*Jacky 1120530 增加 pb-1 (原 css 檔的 .section-title 有設定 padding-bottom: 30px; 太厚了調小一些 ) *@
-                    <div class="section-title pb-1">
+                    @*Jacky 1120530 增加 pb-3 (原 css 檔的 .section-title 有設定 padding-bottom: 30px; 太厚了調小一些 ) *@
+                    <div class="section-title pb-4">
                         @*<h2>商品介紹</h2>*@
                         @* Jacky 1120530 *@
                         <h2>飲品介紹</h2>
@@ -51,21 +52,24 @@
                             //Jacky 1120531
                             // 增加 d-flex justify-content-center align-items-center 用以設定子層 img 的置中
                             <div class="col-lg-4 col-md-6 portfolio-item @str_filter d-flex flex-column justify-content-center align-items-center">
-                                <img src="@Url.Content(str_image_url)" class="img-fluid " alt="" />
+                                <img src="@Url.Content(str_image_url)" class="img-fluid" alt="" />
                                 @* Jacky 1120531 於圖例底下增加 [圖例名稱] *@
                                 <h4 class="mt-3 text-center" data-aos="fade-up">@item.PhotoName</h4>
                                 @* Jacky 1120531 增加 style *@
-                                <div class="portfolio-info px-1" style="margin-bottom: 45%; background-color: antiquewhite;">
-                                    @*Jacky 1120531 增加 class 讓 portfolio-info 訊息置中 *@
-                                    <h4 class="mt-2 text-center text-danger font-weight-bold">@item.PhotoName</h4>
-                                    <p>@item.CodeName</p>
-                                    @* Jacky 1120531 關閉 [顯示原圖大小] *@
-                                    @*<a href="@Url.Content(str_image_url)" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link" title="顯示原圖大小">
-            <i class="fas fa-search-plus"></i></a>*@
-                                    <a href="@Url.Action("PhotoDetail" , "Home" , new { area = "" , id= item.FolderName})" class="details-link" title="更多資訊">
-                                        <i class="fas fa-info-circle"></i>
-                                    </a>
-                                </div>
+                            <div class="portfolio-info px-1" style="margin-bottom: 45%; background-color: antiquewhite;">
+                                @*Jacky 1120531 增加 class 讓 portfolio-info 訊息置中 *@
+                                <h4 class="mt-2 text-center text-danger font-weight-bold">@item.PhotoName</h4>
+                                <p>@item.CodeName</p>
+                                @* Jacky 1120531 關閉 [顯示原圖大小] *@
+                                @*<a href="@Url.Content(str_image_url)" data-gallery="portfolioGallery" class="portfolio-lightbox preview-link" title="顯示原圖大小">
+        <i class="fas fa-search-plus"></i></a>*@
+
+                                @*Jacky 1120613*@
+                                @*<a href="@Url.Action("PhotoDetail" , "Home" , new { area = "" , id = @item.FolderName})" class="details-link" title="更多資訊">*@
+                                <a href="@Url.Action("ShopDetail" , "Shop" , new { area = "" , id = @item.FolderName })" class="details-link" title="更多資訊">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                            </div>
                             </div>
                         }
                     </div>
