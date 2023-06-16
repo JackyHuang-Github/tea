@@ -99,12 +99,20 @@
                 }
 
                 @* Jacky 1120614 顯示購物車圖示 *@
-                <li>
+                @*<li>
                     <a href="@Url.Action("Cart" , "Shop" , new { area = ""})" class="site-cart">
                         <span class="icon icon-shopping_cart"></span>
                         <span class="count">@CartService.Counts</span>
                     </a>
+                </li>*@
+
+                <li>
+                    <a href="@Url.Action("Cart" , "Shop")" class="site-cart">
+                        <span class="icon icon-shopping_cart"></span>
+                        <span class="count">@CartService.Counts</span>
+                    </a>
                 </li>
+
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->

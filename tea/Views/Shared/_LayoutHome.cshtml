@@ -7,15 +7,15 @@
     <title>@AppService.CompanyShortName</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-    
+
     @* Jacky 1120614 增加這個 style.css，因購物車的圖示沒有出現 *@
-    <link href="@Url.Content("~/Plugins/Shoppers/fonts/icomoon/style.css")" rel="stylesheet" />
+    @*<link href="@Url.Content("~/Plugins/Shoppers/fonts/icomoon/style.css")" rel="stylesheet" />*@
 
     @*<link href="@Url.Content("~/Plugins/Company/assets/img/favicon.png")" rel="icon">
         <link href="@Url.Content("~/Plugins/Company/assets/img/apple-touch-icon.png")" rel="apple-touch-icon">*@
     @* Jacky 1120604 *@
-    <link href="@Url.Content("~/Images/App/favicon.png")" rel="icon">
-    <link href="@Url.Content("~/Images/App/apple-touch-icon.png")" rel="apple-touch-icon">
+    @*<link href="@Url.Content("~/Images/App/favicon.png")" rel="icon">
+    <link href="@Url.Content("~/Images/App/apple-touch-icon.png")" rel="apple-touch-icon">*@
 
     @* Google Fonts *@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -33,8 +33,32 @@
     <link href="@Url.Content("~/Plugins/Company/assets/vendor/remixicon/remixicon.css")" rel="stylesheet">
     <link href="@Url.Content("~/Plugins/Company/assets/vendor/swiper/swiper-bundle.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Plugins/Company/assets/css/style.css")" rel="stylesheet">
+
+    @* Jacky 1120615 Add from bookstore *@
+    <link rel="stylesheet" href="@Url.Content("~/shoppers/fonts/icomoon/style.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/shoppers/css/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-chosen.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/shoppers/css/magnific-popup.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/shoppers/css/jquery-ui.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/shoppers/css/owl.carousel.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/shoppers/css/owl.theme.default.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/shoppers/css/style.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
+
     @RenderSection("styles", false)
+
     <script src="@Url.Content("~/Plugins/SweetAlert/sweetalert2.min.js")"></script>
+
+    @* Jacky 1120615 Add from bookstore *@
+    <script src="@Url.Content("~/shoppers/js/jquery-3.3.1.min.js")"></script>
+    <script src="@Url.Content("~/shoppers/js/jquery-ui.js")"></script>
+    <script src="@Url.Content("~/shoppers/js/popper.min.js")"></script>
+    <script src="@Url.Content("~/shoppers/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/shoppers/js/owl.carousel.min.js")"></script>
+    <script src="@Url.Content("~/shoppers/js/jquery.magnific-popup.min.js")"></script>
+    <script src="@Url.Content("~/shoppers/js/main.js")"></script>
+
     @RenderSection("scripts", false)
 </head>
 <body>
